@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import * as geminiService from '@/services/geminiService';
 import * as workoutPlanService from '@/services/workoutPlanService';
 import ApiKeyManager from './ApiKeyManager';
+import { useNavigate } from 'react-router-dom';
 
 const PlanGenerator: React.FC = () => {
   const { profile } = useUserProfile();
@@ -20,7 +21,7 @@ const PlanGenerator: React.FC = () => {
     equipment: [],
     timePerSession: 60,
   });
-
+  const navigate = useNavigate();
   useEffect(() => {
     const checkApiKey = () => {
       const apiKey = localStorage.getItem('gemini-api-key');
@@ -45,6 +46,7 @@ const PlanGenerator: React.FC = () => {
 
   const generateWorkoutPlanHandler = async () => {
     const apiKey = localStorage.getItem('gemini-api-key');
+    localStorage.removeItem("workout-plans")
     
     if (!apiKey) {
       toast.error('Brak klucza API', {
@@ -180,9 +182,16 @@ const PlanGenerator: React.FC = () => {
               />
             </FormGroup>
 
-            <Button onClick={generateWorkoutPlanHandler} disabled={isGenerating} className="w-full">
+            <Button onClick={generateWorkoutPlanHandler} disabled={isGenerating} className="w-full mt-2">
               {isGenerating ? 'Generowanie...' : 'Generuj plan treningowy'}
+
             </Button>
+            
+          {generatedPlan && (
+            <Button onClick={() => navigate("/silownia")} className="w-full mt-2">
+              Wyświetl gotowy plan
+            </Button>)}
+
           </CardContent>
         </Card>
       ) : (

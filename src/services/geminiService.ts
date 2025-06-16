@@ -313,7 +313,7 @@ WYMAGANIA:
 4. Uwzględnij wszystkie preferencje i ograniczenia
 5. Rekomendacje żywieniowe
 
-FORMATO ODPOWIEDZI (MUSI być w czystym JSON):
+FORMAT ODPOWIEDZI (MUSI być w czystym JSON):
 {
   "dailyCalories": ${profileData.dailyCalories},
   "mealsPerDay": ${profileData.mealsPerDay},

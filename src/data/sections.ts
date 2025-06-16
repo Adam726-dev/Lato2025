@@ -32,7 +32,7 @@ export const sectionsData: Section[] = [
     name: "Dieta",
     icon: "🥗",
     color: "bg-green-400",
-    description: "Zdrowe i smaczne posiłki na całe lato",
+    description: "Zdrowe i smaczne posiłki",
     options: [
       {
         id: 1,
@@ -177,7 +177,7 @@ export const sectionsData: Section[] = [
     name: 'Siłownia',
     icon: '🏋️‍♀️',
     color: 'bg-summer-coral',
-    description: 'Najlepsze kluby fitness w Twojej okolicy',
+    description: 'Najlepsze kluby fitness',
     options: [
       {
         id: 1,

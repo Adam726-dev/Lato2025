@@ -73,7 +73,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
     },
     {
       question: "Jak dokładny jest generator planów AI?",
-      answer: "Nasz AI został wytrenowany na bazie tysięcy planów fitness i żywieniowych. Uwzględnia Twój wiek, wagę, cel, preferencje żywieniowe i dostępny czas. Plany są tworzone według sprawdzonych zasad dietetycznych i treningowych, ale zawsze warto skonsultować się z lekarzem przed rozpoczęciem nowej diety."
+      answer: "System uwzględnia Twój wiek, wagę, cel, preferencje żywieniowe i dostępny czas. Plany są tworzone według sprawdzonych zasad dietetycznych i treningowych, ale zawsze warto skonsultować się z lekarzem przed rozpoczęciem nowej diety."
     }
   ];
 
@@ -116,7 +116,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <button
                 onClick={onGetStarted}
-                className="bg-gradient-to-r from-summer-coral to-summer-blue hover:from-summer-coral/90 hover:to-summer-blue/90 text-white text-xl px-8 py-4 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg flex items-center justify-center"
+                className="bg-gradient-to-r from-summer-yellow to-summer-blue hover:from-summer-yellow/90 hover:to-summer-blue/90 text-white text-xl px-8 py-4 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg flex items-center justify-center"
               >
                 Rozpocznij za darmo
                 <ChevronRight className="h-5 w-5 ml-2" />
@@ -135,7 +135,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
                     <Star key={i} className="h-5 w-5 fill-current" />
                   ))}
                 </div>
-                <span>4.9/5 ocena</span>
+                <span>4.5/5 ocena</span>
               </div>
             </div>
           </div>
