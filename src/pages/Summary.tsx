@@ -10,6 +10,14 @@ import { useToast } from '@/hooks/use-toast';
 
 type Selected = { section: Section; option: Option };
 
+// Mapowanie sekcji na kolory tła
+const sectionColors: Record<string, string> = {
+  dieta:    'bg-green-400',
+  silownia: 'bg-red-400',
+  imprezy:  'bg-purple-400',
+  wakacje:  'bg-yellow-500',
+};
+
 const Summary: React.FC = () => {
   const { choices, removeChoice, clearChoices } = usePlan();
   const navigate = useNavigate();
@@ -87,8 +95,14 @@ const Summary: React.FC = () => {
         <div className="space-y-6 mb-8">
           {selectedSections.map(({ section, option }) => (
             <div key={section.id} className="bg-white rounded-lg shadow border border-gray-200">
-              <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                <h2 className="text-xl font-semibold flex items-center">
+              {/* Nagłówek z kolorowym tłem */}
+              <div
+                className={`
+                  p-6 flex items-center justify-between
+                  ${sectionColors[section.id] ?? 'bg-gray-100'}
+                `}
+              >
+                <h2 className="text-xl font-semibold flex items-center text-white">
                   <span className="text-2xl mr-3">{section.icon}</span>
                   {section.name}
                 </h2>
@@ -96,6 +110,7 @@ const Summary: React.FC = () => {
                   Wybrane
                 </span>
               </div>
+
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
@@ -120,29 +135,30 @@ const Summary: React.FC = () => {
                         </div>
                       ))}
                     </div>
-                    {/* Przyciski akcji dla każdej sekcji */}
-                    {section!.id === "silownia" && (
+
+                    {/* Przyciski CTA */}
+                    {section.id === "silownia" && (
                       <Link to="/voucher/silownia">
-                        <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
+                        <button className="mt-4 bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
                           Kup karnet
                         </button>
                       </Link>
                     )}
-                    {section!.id === "dieta" && (
+                    {section.id === "dieta" && (
                       <Link to="/voucher/dieta">
                         <button className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
                           Wykup dietę
                         </button>
                       </Link>
                     )}
-                    {section!.id === "imprezy" && (
+                    {section.id === "imprezy" && (
                       <Link to="/voucher/imprezy">
                         <button className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
                           Zarezerwuj bilet
                         </button>
                       </Link>
                     )}
-                    {section!.id === "wakacje" && (
+                    {section.id === "wakacje" && (
                       <Link to="/voucher/wakacje">
                         <button className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
                           Zarezerwuj wakacje
@@ -152,18 +168,35 @@ const Summary: React.FC = () => {
                   </div>
                 </div>
 
-                {/* przyciski Usuń / Zmień */}
-                <div className="flex space-x-3 mt-4">
+                {/* Przyciski Usuń / Zmień */}
+                <div className="flex gap-4 mt-4">
                   <button
                     onClick={() => removeChoice(section.id as keyof typeof choices)}
-                    className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded transition-colors"
+                    className="
+                      flex-1
+                      py-3
+                      border-2 border-red-600
+                      hover:bg-red-100
+                      text-red-600 font-semibold
+                      rounded-lg
+                      transition
+                      focus:outline-none focus:ring-2 focus:ring-red-500
+                    "
                   >
                     Usuń wybraną opcję
                   </button>
                   <button
-                    // teraz poprawna ścieżka do Twoich routów "/:sectionId"
                     onClick={() => navigate(`/${section.id}`)}
-                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded transition-colors"
+                    className="
+                      flex-1
+                      py-3
+                      border-2 border-blue-500
+                      text-blue-500 font-semibold
+                      rounded-lg
+                      transition
+                      hover:bg-blue-100
+                      focus:outline-none focus:ring-2 focus:ring-blue-400
+                    "
                   >
                     Zmień wybraną opcję
                   </button>
