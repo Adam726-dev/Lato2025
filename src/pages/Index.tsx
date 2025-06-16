@@ -42,7 +42,7 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link to="/kalkulator-bmr">
               <button className="bg-summer-coral hover:bg-summer-coral/90 text-white text-lg px-8 py-3 rounded-md font-medium transition-colors">
-                🧮 Kalkulator BMR & Plan Odchudzania
+                🧮 Kalkulator BMR
               </button>
             </Link>
 

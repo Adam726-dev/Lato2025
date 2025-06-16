@@ -81,14 +81,7 @@ const BMRCalculator: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    const w = parseFloat(formData.weight);
-    const t = parseFloat(formData.targetWeight);
-    if (!isNaN(w) && !isNaN(t) && w === t && formData.goal !== 'maintenance') {
-      setFormData(f => ({ ...f, goal: 'maintenance' }));
-    }
-  }, [formData.weight, formData.targetWeight]);
-
+  // Jeśli cel zmienia się na "maintenance", czyścimy docelową wagę
   useEffect(() => {
     if (formData.goal === 'maintenance' && formData.targetWeight) {
       setFormData(f => ({ ...f, targetWeight: '' }));
@@ -96,17 +89,6 @@ const BMRCalculator: React.FC = () => {
   }, [formData.goal]);
 
   const handleTargetChange = (raw: string) => {
-    const w = parseFloat(formData.weight);
-    const t = parseFloat(raw);
-
-    if (formData.goal === 'weight-loss' && !isNaN(w) && !isNaN(t) && t >= w) {
-      toast('Docelowa waga musi być mniejsza od obecnej');
-      return;
-    }
-    if (formData.goal === 'muscle-gain' && !isNaN(w) && !isNaN(t) && t <= w) {
-      toast('Docelowa waga musi być większa od obecnej');
-      return;
-    }
     setFormData(f => ({ ...f, targetWeight: raw }));
   };
 
@@ -117,6 +99,7 @@ const BMRCalculator: React.FC = () => {
     const heightNum = parseFloat(formData.height);
     const targetNum = parseFloat(formData.targetWeight);
 
+    // Walidacja wszystkich niezbędnych pól
     if (
       isNaN(ageNum) ||
       isNaN(weightNum) ||
@@ -128,9 +111,24 @@ const BMRCalculator: React.FC = () => {
       return;
     }
 
+    // Walidacja relacji wagi w zależności od celu
+    if (formData.goal === 'weight-loss' && targetNum >= weightNum) {
+      toast('Docelowa waga musi być mniejsza od obecnej');
+      return;
+    }
+    if (formData.goal === 'muscle-gain' && targetNum <= weightNum) {
+      toast('Docelowa waga musi być większa od obecnej');
+      return;
+    }
+
     setIsLoading(true);
     setTimeout(() => {
-      const bmr = calculateBMR({ age: ageNum, weight: weightNum, height: heightNum, gender: formData.gender });
+      const bmr = calculateBMR({
+        age: ageNum,
+        weight: weightNum,
+        height: heightNum,
+        gender: formData.gender,
+      });
       const dailyCalories = bmr * getActivityMultiplier(formData.activityLevel);
 
       let intake = dailyCalories;
@@ -142,7 +140,14 @@ const BMRCalculator: React.FC = () => {
       const weightDifference =
         formData.goal === 'maintenance' ? 0 : Math.abs(weightNum - targetNum);
 
-      setResult({ bmr, dailyCalories, intake, recommendedCatering, recommendedWorkout, weightDifference });
+      setResult({
+        bmr,
+        dailyCalories,
+        intake,
+        recommendedCatering,
+        recommendedWorkout,
+        weightDifference,
+      });
       setIsLoading(false);
       toast('Plan wygenerowany');
     }, 1200);
@@ -156,16 +161,14 @@ const BMRCalculator: React.FC = () => {
           ← Powróć do strony głównej
         </Link>
 
-        {/* Formularz */}
         <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8 space-y-6">
           <div className="text-center">
             <Calculator className="mx-auto h-10 w-10 text-blue-500 mb-2" />
-            <h1 className="text-2xl font-bold">Kalkulator BMR & Plan Odchudzania</h1>
+            <h1 className="text-2xl font-bold">Kalkulator BMR</h1>
             <p className="text-gray-500">Oblicz zapotrzebowanie i dobierz plan</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Wiek */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Wiek (lata)</label>
               <input
@@ -176,7 +179,6 @@ const BMRCalculator: React.FC = () => {
                 className="w-full border rounded-md p-2 placeholder-gray-400"
               />
             </div>
-            {/* Płeć */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Płeć</label>
               <select
@@ -188,7 +190,6 @@ const BMRCalculator: React.FC = () => {
                 <option value="female">Kobieta</option>
               </select>
             </div>
-            {/* Aktualna waga */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Aktualna waga (kg)</label>
               <input
@@ -199,7 +200,6 @@ const BMRCalculator: React.FC = () => {
                 className="w-full border rounded-md p-2 placeholder-gray-400"
               />
             </div>
-            {/* Wzrost */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Wzrost (cm)</label>
               <input
@@ -210,7 +210,6 @@ const BMRCalculator: React.FC = () => {
                 className="w-full border rounded-md p-2 placeholder-gray-400"
               />
             </div>
-            {/* Cel */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Cel</label>
               <select
@@ -223,7 +222,6 @@ const BMRCalculator: React.FC = () => {
                 <option value="maintenance">Utrzymanie wagi</option>
               </select>
             </div>
-            {/* Poziom aktywności */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Poziom aktywności</label>
               <select
@@ -238,7 +236,6 @@ const BMRCalculator: React.FC = () => {
                 <option value="very-active">Ekstremalnie aktywny (nie zatrzymujesz się!)</option>
               </select>
             </div>
-            {/* Docelowa waga */}
             {formData.goal !== 'maintenance' && (
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Docelowa waga (kg)</label>
@@ -247,8 +244,6 @@ const BMRCalculator: React.FC = () => {
                   value={formData.targetWeight}
                   onChange={e => handleTargetChange(e.target.value)}
                   placeholder="65"
-                  min={formData.goal === 'muscle-gain' ? formData.weight : undefined}
-                  max={formData.goal === 'weight-loss' ? formData.weight : undefined}
                   className="w-full border rounded-md p-2 placeholder-gray-400"
                 />
               </div>
@@ -266,7 +261,7 @@ const BMRCalculator: React.FC = () => {
 
         {result && (
           <section className="space-y-6">
-            {/* Metaboliczne */}
+            {/* Wyniki metaboliczne */}
             <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg shadow p-6">
               <h2 className="text-lg font-semibold text-gray-700 mb-4">Twoje wyniki metaboliczne</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 text-center gap-4">
@@ -311,7 +306,7 @@ const BMRCalculator: React.FC = () => {
               </div>
             </div>
 
-            {/* Prognoza */}
+            {/* Prognoza zmiany masy */}
             <div className={`rounded-lg shadow p-6 text-white ${result.intake >= result.dailyCalories ? 'bg-green-500' : 'bg-orange-500'}`}>
               <h3 className="font-semibold mb-2">
                 {result.intake >= result.dailyCalories ? 'Nadwyżka' : 'Deficyt'}:{' '}
@@ -330,7 +325,8 @@ const BMRCalculator: React.FC = () => {
                     {result.intake === result.dailyCalories
                       ? '∞'
                       : Math.ceil(result.weightDifference / (Math.abs((result.intake - result.dailyCalories) * 7) / 7000))}
-                  </span>{' '}tygodni
+                  </span>{' '}
+                  tygodni
                 </div>
               </div>
             </div>

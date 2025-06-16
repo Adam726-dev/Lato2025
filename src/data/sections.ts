@@ -214,7 +214,52 @@ export const sectionsData: Section[] = [
         rating: 4.6,
         image: '🏊‍♀️',
         features: ['Aqua aerobik', 'Pływalnia', 'Jacuzzi', 'Zajęcia w wodzie', 'Rehabilitacja']
-      }
+      },
+      {
+      id: 5,
+      name: 'FitLife Club',
+      description: 'Nowoczesny klub fitness z innowacyjnym sprzętem',
+      price: '99 zł/miesiąc',
+      rating: 4.4,
+      image: '🏃',
+      features: ['Trening personalny', 'Strefa spinning', 'Kettlebells i TRX', 'Małe grupy']
+    },
+    {
+      id: 6,
+      name: 'IronWorks Gym',
+      description: 'Mekka wolnych ciężarów i siły',
+      price: '119 zł/miesiąc',
+      rating: 4.3,
+      image: '⚙️',
+      features: ['Strefa free weights', 'Power racks', 'Ławki olimpijskie', 'Surowa atmosfera']
+    },
+    {
+      id: 7,
+      name: 'UrbanFit Studio',
+      description: 'Trening funkcjonalny w miejskim stylu',
+      price: '109 zł/miesiąc',
+      rating: 4.2,
+      image: '🏙️',
+      features: ['TRX', 'Kettlebells', 'Box jumps', 'Stretching po zajęciach']
+    },
+    {
+      id: 8,
+      name: 'PulseFit Center',
+      description: 'Cardio, siła i trener grupowy',
+      price: '139 zł/miesiąc',
+      rating: 4.6,
+      image: '📈',
+      features: ['Strefa cardio', 'Maszyny TechnoGym', 'Zajęcia grupowe', 'Monitoring tętna']
+    },
+    {
+      id: 9,
+      name: 'ZenFit Retreat',
+      description: 'Połączenie treningu z relaksem',
+      price: '149 zł/miesiąc',
+      rating: 4.5,
+      image: '🌿',
+      features: ['Joga', 'Medytacja', 'Saunarium', 'Masaże']
+    }
     ]
   },
   {
