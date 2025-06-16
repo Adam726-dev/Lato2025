@@ -214,7 +214,52 @@ export const sectionsData: Section[] = [
         rating: 4.6,
         image: '🏊‍♀️',
         features: ['Aqua aerobik', 'Pływalnia', 'Jacuzzi', 'Zajęcia w wodzie', 'Rehabilitacja']
-      }
+      },
+      {
+      id: 5,
+      name: 'FitLife Club',
+      description: 'Nowoczesny klub fitness z innowacyjnym sprzętem',
+      price: '99 zł/miesiąc',
+      rating: 4.4,
+      image: '🏃',
+      features: ['Trening personalny', 'Strefa spinning', 'Kettlebells i TRX', 'Małe grupy']
+    },
+    {
+      id: 6,
+      name: 'IronWorks Gym',
+      description: 'Mekka wolnych ciężarów i siły',
+      price: '119 zł/miesiąc',
+      rating: 4.3,
+      image: '⚙️',
+      features: ['Strefa free weights', 'Power racks', 'Ławki olimpijskie', 'Surowa atmosfera']
+    },
+    {
+      id: 7,
+      name: 'UrbanFit Studio',
+      description: 'Trening funkcjonalny w miejskim stylu',
+      price: '109 zł/miesiąc',
+      rating: 4.2,
+      image: '🏙️',
+      features: ['TRX', 'Kettlebells', 'Box jumps', 'Stretching po zajęciach']
+    },
+    {
+      id: 8,
+      name: 'PulseFit Center',
+      description: 'Cardio, siła i trener grupowy',
+      price: '139 zł/miesiąc',
+      rating: 4.6,
+      image: '📈',
+      features: ['Strefa cardio', 'Maszyny TechnoGym', 'Zajęcia grupowe', 'Monitoring tętna']
+    },
+    {
+      id: 9,
+      name: 'ZenFit Retreat',
+      description: 'Połączenie treningu z relaksem',
+      price: '149 zł/miesiąc',
+      rating: 4.5,
+      image: '🌿',
+      features: ['Joga', 'Medytacja', 'Saunarium', 'Masaże']
+    }
     ]
   },
   {
@@ -259,7 +304,52 @@ export const sectionsData: Section[] = [
         rating: 4.6,
         image: '🍽️',
         features: ['Local food', 'Wine tasting', 'Warsztaty gotowania', 'Acoustic stage', 'Family friendly']
-      }
+      },
+      {
+      id: 6,
+      name: 'Retro Disco Party',
+      description: 'Najlepsze hity lat 70. i 80. w rytmie disco',
+      price: '49 zł/wydarzenie',
+      rating: 4.4,
+      image: '🕺',
+      features: ['DJ z płyt winylowych', 'Konkurs na najlepszy strój', 'Klimatyczne światła']
+      },
+      {
+        id: 7,
+        name: 'Silent Cinema Night',
+        description: 'Pokaz filmowy pod gwiazdami – słuchawki w cenie',
+        price: '59 zł/bilet',
+        rating: 4.5,
+        image: '🎬',
+        features: ['5 kultowych filmów', 'Dźwięk na słuchawkach', 'Snack bar']
+      },
+      {
+        id: 8,
+        name: 'Open-Air Jazz Evening',
+        description: 'Romantyczny wieczór z jazzowymi standardami',
+        price: '89 zł/bilet',
+        rating: 4.7,
+        image: '🎷',
+        features: ['Na żywo: 5-osobowy zespół', 'Strefa lounge', 'Degustacja win']
+      },
+      {
+        id: 9,
+        name: 'Food Truck Fiesta',
+        description: 'Najlepsze food trucki i street food w jednym miejscu',
+        price: 'Wejście free',
+        rating: 4.9,
+        image: '🚚',
+        features: ['20 food trucków', 'Strefa dziecięca', 'Muzyka na żywo']
+      },
+      {
+        id: 10,
+        name: 'Neon Rave Party',
+        description: 'Impreza w stylu rave z UV i laserami',
+        price: '79 zł/wydarzenie',
+        rating: 4.3,
+        image: '🌌',
+        features: ['UV painting', 'Laser show', 'After till dawn']
+      },
     ]
   },
   {
@@ -275,7 +365,7 @@ export const sectionsData: Section[] = [
         description: 'Magiczna Santorini i Mykonos w jednej podróży',
         price: '2599 zł/osoba',
         rating: 4.9,
-        image: '🇬🇷',
+        image: '🏛️',
         features: ['7 dni', 'All inclusive', 'Loty w cenie', 'Hotel 4*', 'Zwiedzanie']
       },
       {
@@ -302,9 +392,45 @@ export const sectionsData: Section[] = [
         description: 'Amalfi Coast - raj na ziemi',
         price: '3299 zł/osoba',
         rating: 4.8,
-        image: '🇮🇹',
+        image: '🍝',
         features: ['8 dni', 'Boutique hotel', 'Loty', 'Transfery', 'Degustacje win']
-      }
+      },
+      {
+        id: 5,
+        name: 'Islandzkie Krajobrazy',
+        description: 'Gejzery, wulkany i zorza polarna',
+        price: '2199 zł/osoba',
+        rating: 4.6,
+        image: '❄️',
+        features: ['6 dni', 'All inclusive', 'Basen termalny', 'Przewodnik', 'Zorza polarna']
+      },
+      {
+        id: 6,
+        name: 'Hiszpańska Fiesta',
+        description: 'Tapas, flamenco i plaże Costa Brava',
+        price: '1799 zł/osoba',
+        rating: 4.7,
+        image: '💃',
+        features: ['5 dni', 'All inclusive', 'Przewodnik', 'Wieczorne wyjścia', 'Plaże']
+      },
+      {
+        id: 7,
+        name: 'Safari w Afryce',
+        description: 'Spotkania z dziką przyrodą na Serengeti',
+        price: '4599 zł/osoba',
+        rating: 4.9,
+        image: '🦁',
+        features: ['7 dni', 'Safari 4×4', 'Noclegi w lodge', 'Local guide', 'All inclusive']
+      },
+      {
+        id: 8,
+        name: 'Weneckie Rejsy',
+        description: 'Romantyczny tydzień na kanałach Wenecji',
+        price: '2499 zł/osoba',
+        rating: 4.5,
+        image: '🛶',
+        features: ['7 dni', 'Rejs gondolą', 'Hotel 4*', 'Zwiedzanie', 'Kolacje na wodzie']
+      },
     ]
   }
 ];

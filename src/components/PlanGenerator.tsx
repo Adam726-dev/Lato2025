@@ -46,8 +46,7 @@ const PlanGenerator: React.FC = () => {
 
   const generateWorkoutPlanHandler = async () => {
     const apiKey = localStorage.getItem('gemini-api-key');
-    localStorage.removeItem("workout-plans")
-    
+    localStorage.removeItem('workout-plans');
     if (!apiKey) {
       toast.error('Brak klucza API', {
         description: 'Proszę wprowadzić klucz API Gemini w sekcji konfiguracji powyżej'
