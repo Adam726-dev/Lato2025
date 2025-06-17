@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
+import type { PlanChoices } from '@/context/PlanContext';
 import { sectionsData } from '@/data/sections';
 import Navigation from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
@@ -45,7 +45,7 @@ const SectionPage = () => {
       case 'silownia':
         return <GymSection {...commonProps} />;
       case 'dieta':
-        return <DietSection {...commonProps} />;
+        return <DietSection {...commonProps} hasNutritionProfile={!!choices.dieta} choices={Object.fromEntries(Object.entries(choices).filter(([key, value]) => typeof value === 'number'))} updateChoice={(sectionId, optionId) => updateChoice(sectionId as keyof PlanChoices, Number(optionId))} />;
       case 'wakacje':
         return <TravelSection {...commonProps} />;
       default:
