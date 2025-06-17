@@ -4,6 +4,7 @@
   "short_name": "Lato 2025",
   "description": "Stwórz swój idealny plan na lato - dieta, siłownia, imprezy i wakacje w jednym miejscu!",
   "start_url": "/",
+  "lang": "pl",
   "display": "standalone",
   "theme_color": "#4FB3D9",
   "background_color": "#ffffff",
