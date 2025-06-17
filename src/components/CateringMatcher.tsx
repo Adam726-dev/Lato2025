@@ -96,7 +96,7 @@ const CateringMatcher: React.FC<CateringMatcherProps> = ({ dietPlan, onComplete,
   const handleConfirm = () => {
     if (selectedCatering) {
       console.log('Wybrano catering:', selectedCatering);
-      // TODO: Zapisz wybór w profilu użytkownika
+      
     }
     onComplete();
   };
