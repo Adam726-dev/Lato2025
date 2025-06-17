@@ -16,7 +16,7 @@ const Navigation: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-2xl">☀️</span>
-            <span className="font-bold text-lg text-gray-900">Twój Plan na Lato</span>
+            <span className="font-bold text-lg text-gray-900 hidden sm:block">Twój Plan na Lato</span>
           </Link>
           
           <div className="flex items-center space-x-4">
