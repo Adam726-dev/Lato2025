@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
 import { useAuth } from '@/context/AuthContext';
@@ -23,6 +23,7 @@ const Summary: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const [showInfo, setShowInfo] = useState(false);
 
   const selectedSections: Selected[] = Object.entries(choices)
     .map(([sectionId, optionId]) => {
@@ -87,8 +88,25 @@ const Summary: React.FC = () => {
         <div className="bg-white rounded-lg shadow-lg border border-gray-200 mb-8">
           <div className="p-6">
             <h1 className="text-2xl font-bold">Cześć {user?.displayName}!</h1>
-            <p className="text-gray-600 mt-2">Oto Twój spersonalizowany plan na lato:</p>
+            <p className="text-gray-600 mt-2">Oto Twój spersonalizowany plan na lato: </p>
+           
+            <div >
+              <button
+                onClick={() => setShowInfo(!showInfo)}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full p-2 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                title="Informacja o cenach"
+              >
+                ℹ️
+              </button>
+              {showInfo && (
+                <div className="mt-2 bg-gray-100 text-gray-700 p-4 rounded shadow-md">
+                  Wszystkie ceny podane na stronie są to ceny brutto.
+                </div>
+              )}
+            </div>
           </div>
+
+          
         </div>
 
         {/* Summary Cards */}
