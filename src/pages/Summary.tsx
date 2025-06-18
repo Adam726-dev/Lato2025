@@ -1,6 +1,8 @@
+// src/components/sections/Summary.tsx
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { usePlan } from '@/context/PlanContext';
+import { usePlan, PlanChoices } from '@/context/PlanContext';
 import { useAuth } from '@/context/AuthContext';
 import Navigation from '@/components/Navigation';
 import { ArrowLeft, Calendar, Share2 } from 'lucide-react';
@@ -10,28 +12,36 @@ import { useToast } from '@/hooks/use-toast';
 
 type Selected = { section: Section; option: Option };
 
-// Mapowanie sekcji na kolory tła
 const sectionColors: Record<string, string> = {
-  dieta:    'bg-green-400',
+  dieta: 'bg-green-500',
   silownia: 'bg-red-400',
-  imprezy:  'bg-purple-400',
-  wakacje:  'bg-yellow-500',
+  imprezy: 'bg-purple-500',
+  wakacje: 'bg-yellow-500',
 };
 
 const Summary: React.FC = () => {
-  const { choices, removeChoice, clearChoices } = usePlan();
-  const navigate = useNavigate();
+  const { choices, updateChoice, removeChoice } = usePlan();
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [showInfo, setShowInfo] = useState(false);
 
-  const selectedSections: Selected[] = Object.entries(choices)
-    .map(([sectionId, optionId]) => {
-      const section = sectionsData.find(s => s.id === sectionId);
-      const option = section?.options.find(o => o.id === optionId);
-      return section && option ? { section, option } : null;
-    })
-    .filter((item): item is Selected => item !== null);
+  // Zbierz wszystkie wybrane pozycje, uwzględniając multi-wybór imprez
+  const selectedSections: Selected[] = [];
+  for (const [sectionId, raw] of Object.entries(choices)) {
+    const section = sectionsData.find(s => s.id === sectionId);
+    if (!section) continue;
+
+    if (sectionId === 'imprezy' && Array.isArray(raw)) {
+      raw.forEach(optionId => {
+        const opt = section.options.find(o => o.id === optionId);
+        if (opt) selectedSections.push({ section, option: opt });
+      });
+    } else if (typeof raw === 'number') {
+      const opt = section.options.find(o => o.id === raw);
+      if (opt) selectedSections.push({ section, option: opt });
+    }
+  }
 
   const totalCost = selectedSections.reduce(
     (sum, { option }) => sum + Number(option.price.replace(/\D/g, '')),
@@ -59,19 +69,17 @@ const Summary: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
         <Navigation />
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <div className="text-6xl mb-6">📋</div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Twój plan jest pusty</h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Zacznij od wyboru opcji w dowolnej sekcji, aby zobaczyć swój plan!
-            </p>
-            <Link to="/">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium transition-colors">
-                🏠 Powróć do strony głównej
-              </button>
-            </Link>
-          </div>
+        <main className="max-w-4xl mx-auto px-4 py-12 text-center">
+          <div className="text-6xl mb-6">📋</div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Twój plan jest pusty</h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Zacznij od wyboru opcji w dowolnej sekcji, aby zobaczyć swój plan!
+          </p>
+          <Link to="/">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium">
+              🏠 Powróć do strony głównej
+            </button>
+          </Link>
         </main>
       </div>
     );
@@ -80,46 +88,34 @@ const Summary: React.FC = () => {
   return (
     <div>
       <Navigation />
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
         <Link to="/" className="inline-flex items-center text-gray-600 mb-6">
           <ArrowLeft className="h-5 w-5 mr-2" /> Wróć
         </Link>
 
-        <div className="bg-white rounded-lg shadow-lg border border-gray-200 mb-8">
-          <div className="p-6">
-            <h1 className="text-2xl font-bold">Cześć {user?.displayName}!</h1>
-            <p className="text-gray-600 mt-2">Oto Twój spersonalizowany plan na lato: </p>
-           
-            <div >
-              <button
-                onClick={() => setShowInfo(!showInfo)}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full p-2 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-                title="Informacja o cenach"
-              >
-                ℹ️
-              </button>
-              {showInfo && (
-                <div className="mt-2 bg-gray-100 text-gray-700 p-4 rounded shadow-md">
-                  Wszystkie ceny podane na stronie są to ceny brutto.
-                </div>
-              )}
+        <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 mb-8">
+          <h1 className="text-2xl font-bold mb-2">Cześć {user?.displayName}!</h1>
+          <p className="text-gray-600 mb-4">Oto Twój spersonalizowany plan na lato:</p>
+          <button
+            onClick={() => setShowInfo(!showInfo)}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full p-2 shadow-md"
+            title="Informacja o cenach"
+          >
+            ℹ️
+          </button>
+          {showInfo && (
+            <div className="mt-2 bg-gray-100 text-gray-700 p-4 rounded shadow-md">
+              Wszystkie ceny podane na stronie są to ceny brutto.
             </div>
-          </div>
-
-          
+          )}
         </div>
 
-        {/* Summary Cards */}
-        <div className="space-y-6 mb-8">
-          {selectedSections.map(({ section, option }) => (
-            <div key={section.id} className="bg-white rounded-lg shadow border border-gray-200">
-              {/* Nagłówek z kolorowym tłem */}
-              <div
-                className={`
-                  p-6 flex items-center justify-between
-                  ${sectionColors[section.id] ?? 'bg-gray-100'}
-                `}
-              >
+        {/* Karty podsumowania */}
+        <div className="space-y-6">
+          {selectedSections.map(({ section, option }, idx) => (
+            <div key={`${section.id}-${option.id}-${idx}`} className="bg-white rounded-lg shadow border border-gray-200">
+              {/* Nagłówek */}
+              <div className={`p-6 flex items-center justify-between ${sectionColors[section.id] ?? 'bg-gray-100'}`}>
                 <h2 className="text-xl font-semibold flex items-center text-white">
                   <span className="text-2xl mr-3">{section.icon}</span>
                   {section.name}
@@ -128,7 +124,7 @@ const Summary: React.FC = () => {
                   Wybrane
                 </span>
               </div>
-
+              {/* Treść */}
               <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
@@ -136,87 +132,78 @@ const Summary: React.FC = () => {
                     <p className="text-gray-600 text-sm">{option.description}</p>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-blue-600">
-                      {option.price} zł
-                    </div>
-                    <div className="flex items-center mt-1">
-                      <span className="text-yellow-500">⭐</span>
-                      <span className="ml-1 text-sm text-gray-600">{option.rating}</span>
-                    </div>
+                    <div className="text-2xl font-bold text-blue-600">{option.price} zł</div>
+                    {'rating' in option && (
+                      <div className="flex items-center mt-1 text-sm text-gray-600">
+                        <span className="text-yellow-500">⭐</span>
+                        <span className="ml-1">{(option as any).rating}</span>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <div className="space-y-1">
-                      {option.features.slice(0, 3).map((feature, idx) => (
-                        <div key={idx} className="flex items-center text-sm text-gray-600">
-                          <span className="text-green-500 mr-2">✓</span>
-                          {feature}
+                      {option.features?.slice(0, 3).map((f, i) => (
+                        <div key={i} className="flex items-center text-sm text-gray-600">
+                          <span className="text-green-500 mr-2">✓</span>{f}
                         </div>
                       ))}
                     </div>
-
-                    {/* Przyciski CTA */}
-                    {section.id === "silownia" && (
+                    {/* CTA */}
+                    {section.id === 'silownia' && (
                       <Link to="/voucher/silownia">
-                        <button className="mt-4 bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
+                        <button className="mt-4 bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-md w-full">
                           Kup karnet
                         </button>
                       </Link>
                     )}
-                    {section.id === "dieta" && (
+                    {section.id === 'dieta' && (
                       <Link to="/voucher/dieta">
-                        <button className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
+                        <button className="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md w-full">
                           Wykup dietę
                         </button>
                       </Link>
                     )}
-                    {section.id === "imprezy" && (
+                    {section.id === 'imprezy' && (
                       <Link to="/voucher/imprezy">
-                        <button className="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
+                        <button className="mt-4 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-md w-full">
                           Zarezerwuj bilet
                         </button>
                       </Link>
                     )}
-                    {section.id === "wakacje" && (
+                    {section.id === 'wakacje' && (
                       <Link to="/voucher/wakacje">
-                        <button className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md font-medium transition-colors w-full">
+                        <button className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md w-full">
                           Zarezerwuj wakacje
                         </button>
                       </Link>
                     )}
                   </div>
                 </div>
-
-                {/* Przyciski Usuń / Zmień */}
+                {/* Usuń / Zmień */}
                 <div className="flex gap-4 mt-4">
-                  <button
-                    onClick={() => removeChoice(section.id as keyof typeof choices)}
-                    className="
-                      flex-1
-                      py-3
-                      border-2 border-red-600
-                      hover:bg-red-100
-                      text-red-600 font-semibold
-                      rounded-lg
-                      transition
-                      focus:outline-none focus:ring-2 focus:ring-red-500
-                    "
-                  >
-                    Usuń wybraną opcję
-                  </button>
+                  {section.id === 'imprezy'
+                    ? (
+                      <button
+                        onClick={() => updateChoice('imprezy', option.id)}
+                        className="flex-1 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-100"
+                      >
+                        Anuluj
+                      </button>
+                    )
+                    : (
+                      <button
+                        onClick={() => removeChoice(section.id as keyof PlanChoices)}
+                        className="flex-1 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-100"
+                      >
+                        Usuń
+                      </button>
+                    )
+                  }
                   <button
                     onClick={() => navigate(`/${section.id}`)}
-                    className="
-                      flex-1
-                      py-3
-                      border-2 border-blue-500
-                      text-blue-500 font-semibold
-                      rounded-lg
-                      transition
-                      hover:bg-blue-100
-                      focus:outline-none focus:ring-2 focus:ring-blue-400
-                    "
+                    className="flex-1 py-3 border-2 border-blue-500 text-blue-500 font-semibold rounded-lg hover:bg-blue-100"
                   >
-                    Zmień wybraną opcję
+                    Zmień
                   </button>
                 </div>
               </div>
@@ -224,34 +211,28 @@ const Summary: React.FC = () => {
           ))}
         </div>
 
-        {/* Koszt całego planu */}
-        <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg mb-8">
-          <div className="p-6 text-center">
-            <h3 className="text-2xl font-bold mb-2">Szacunkowy koszt całego planu</h3>
-            <div className="text-4xl font-bold">{totalCost} zł</div>
-            <p className="mt-2 text-white/90">
-              {selectedSections.length}{' '}
-              {selectedSections.length === 1 ? 'wybrana aktywność' : 'wybrane aktywności'}
-            </p>
-          </div>
+        {/* Całkowity koszt */}
+        <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg p-6 text-center">
+          <h3 className="text-2xl font-bold mb-2">Szacunkowy koszt planu</h3>
+          <div className="text-4xl font-bold">{totalCost} zł</div>
+          <p className="mt-2 text-white/90">
+            {selectedSections.length} {selectedSections.length === 1 ? 'aktywn.' : 'aktywn.'}
+          </p>
         </div>
 
         {/* Dalsze akcje */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
             onClick={handleAddToCalendar}
-            className="bg-green-500 hover:bg-green-600 text-white py-3 font-medium transition-colors flex items-center justify-center"
+            className="bg-green-500 hover:bg-green-600 text-white py-3 rounded-md flex items-center justify-center"
           >
-            <Calendar className="h-5 w-5 mr-2" />
-            Dodaj do Google Calendar
+            <Calendar className="h-5 w-5 mr-2" /> Dodaj do Google Calendar
           </button>
-
           <button
             onClick={handleShare}
-            className="border-2 border-gray-300 bg-white hover:bg-gray-100 text-gray-800 py-3 font-medium transition-colors flex items-center justify-center"
+            className="border-2 border-gray-300 bg-white hover:bg-gray-100 text-gray-800 py-3 rounded-md flex items-center justify-center"
           >
-            <Share2 className="h-5 w-5 mr-2" />
-            Udostępnij plan
+            <Share2 className="h-5 w-5 mr-2" /> Udostępnij plan
           </button>
         </div>
       </main>

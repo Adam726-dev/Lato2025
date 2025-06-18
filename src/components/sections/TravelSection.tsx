@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import TravelWizard from '@/components/TravelWizard'
 import TravelPlanGenerator from '@/components/TravelPlanGenerator'
+import { optionCardBase } from '@/components/ui/OptionCard'
 
 interface TravelOption {
   id: number
@@ -187,11 +188,11 @@ const TravelSection: React.FC<TravelSectionProps> = ({
               key={opt.id}
               onClick={() => setExpanded(opt)}
               className={`
-                bg-white rounded-lg shadow hover:shadow-lg cursor-pointer
-                border-2 transition
+                ${optionCardBase} +
+                ''
                 ${isSel
-                  ? 'border-yellow-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'}
+                  ? 'border-2 border-yellow-500 bg-blue-50'
+                  : 'hover:border-yellow-300'}
               `}
             >
               <CardContent className="p-6 text-center">

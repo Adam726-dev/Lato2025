@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import NutritionWizard from '../NutritionWizard';
 import type { Section, Option } from '../../data/sections';
 import { usePlan, PlanChoices } from '@/context/PlanContext'
+import { optionCardBase } from '@/components/ui/OptionCard'
 
 interface DietSectionProps {
   sectionId: keyof PlanChoices
@@ -104,10 +105,13 @@ const DietSection: React.FC<DietSectionProps> = ({
             return (
               <div
                 key={option.id}
-                className={`
-                  bg-white rounded-lg shadow-md p-6 cursor-pointer transition
-                  ${isSel ? 'border-2 border-green-600 scale-105' : 'border border-gray-200 hover:shadow-xl hover:scale-105'}
-                `}
+                className={
+                  optionCardBase +
+                  'p-8 ' +
+                  (isSel
+                    ? 'border-2 border-green-600 transform scale-105'
+                    : '')
+                }
                 onClick={() => setExpanded(option)}
               >
                 <div className="text-4xl mb-4 text-center">{option.image}</div>
@@ -190,8 +194,8 @@ const DietSection: React.FC<DietSectionProps> = ({
 
                 {choices[sectionId] === expanded.id && (
                   <Button
-                    variant="destructive"
-                    className="flex-1"
+                    variant="outline"
+                    className="flex-1 border-red-600 text-red-600 hover:bg-red-50 hover:text-red-700"
                     onClick={() => {
                       removeChoice(sectionId);
                       setExpanded(null);

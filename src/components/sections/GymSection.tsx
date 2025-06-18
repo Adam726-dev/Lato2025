@@ -20,6 +20,7 @@ import WorkoutTracker from '@/components/WorkoutTracker';
 import FitnessWizard from '@/components/FitnessWizard';
 import { useUserProfile } from '@/context/UserProfileContext';
 import { usePlan, PlanChoices } from '@/context/PlanContext';
+import { optionCardBase } from '@/components/ui/OptionCard'
 
 interface GymSectionProps {
   sectionId: keyof PlanChoices;
@@ -166,7 +167,7 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
       {/*Siatka kafelków*/}
       <div className="max-w-6xl mx-auto space-y-6">
         <h3 className="text-2xl font-bold">Wybierz Siłownię</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {section.options.map((option) => {
             const isSelected = choices[sectionId] === option.id;
             return (
@@ -174,11 +175,11 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
                 key={option.id}
                 onClick={() => setModalOption(option)}
                 className={`
-                  bg-white rounded-lg shadow-md cursor-pointer
-                  border-2 transition-transform transform hover:scale-105
+                  ${optionCardBase}
+                  p-6
                   ${isSelected
-                    ? 'border-red-600 bg-red-50'
-                    : 'border-gray-200 hover:border-gray-300'}
+                    ? 'border-2 border-red-600 bg-red-50'
+                    : ''}
                 `}
               >
                 <div className="p-6 text-center">
