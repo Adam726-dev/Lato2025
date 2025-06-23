@@ -114,7 +114,9 @@ const DietSection: React.FC<DietSectionProps> = ({
                 }
                 onClick={() => setExpanded(option)}
               >
-                <div className="text-4xl mb-4 text-center">{option.image}</div>
+                <div className="text-4xl mb-4 text-center">
+                  {/* Usunięto wyświetlanie obrazków i ikon */}
+                </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">
                   {option.name}
                 </h3>
@@ -131,7 +133,7 @@ const DietSection: React.FC<DietSectionProps> = ({
                 )}
                 {option.price != null && (
                   <div className="text-lg font-bold text-green-600 mb-2 text-center">
-                    {option.price} zł/dzień
+                    {option.price}
                   </div>
                 )}
                 <div className="flex items-center justify-center text-green-600">
@@ -177,7 +179,7 @@ const DietSection: React.FC<DietSectionProps> = ({
 
               {/* cena */}
               <div className="text-2xl font-bold text-green-600 text-center">
-                {expanded.price} zł/dzień
+                {expanded.price} 
               </div>
 
               {/* akcje */}
