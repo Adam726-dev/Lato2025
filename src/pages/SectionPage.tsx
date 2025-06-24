@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
-import type { PlanChoices } from '@/context/PlanContext';
 import { sectionsData } from '@/data/sections';
 import Navigation from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
@@ -10,19 +9,18 @@ import GymSection from '@/components/sections/GymSection';
 import DietSection from '@/components/sections/DietSection';
 import TravelSection from '@/components/sections/TravelSection';
 
-const SectionPage = () => {
+const SectionPage: React.FC = () => {
   const { sectionId } = useParams<{ sectionId: string }>();
   const { choices, updateChoice } = usePlan();
 
-  const section = sectionsData.find(s => s.id === sectionId);
-
+  const section = sectionsData.find((s) => s.id === sectionId);
   if (!section) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Navigation />
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Sekcja nie znaleziona</h1>
+            <h1 className="text-2xl font-bold">Sekcja nie znaleziona</h1>
             <Link to="/">
               <Button>Powróć do strony głównej</Button>
             </Link>
@@ -66,27 +64,20 @@ const SectionPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
       <Navigation />
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <Link to="/">
-            <button className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Powróć do strony głównej
-            </button>
+          <Link to="/" className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Powróć do strony głównej
           </Link>
-          
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold mb-2">
               {section.icon} {section.name}
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-              {section.description}
-            </p>
+            <p className="text-xl text-gray-600">{section.description}</p>
           </div>
         </div>
-
-        {renderSectionContent()}
+        {Content}
       </main>
     </div>
   );
