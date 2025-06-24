@@ -1,3 +1,5 @@
+// src/pages/SectionPage.tsx
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
@@ -12,8 +14,9 @@ import TravelSection from '@/components/sections/TravelSection';
 
 const SectionPage: React.FC = () => {
   const { sectionId } = useParams<{ sectionId: keyof PlanChoices }>();
-  const { choices, updateChoice } = usePlan();
+  const { updateChoice } = usePlan();
 
+  // Znajdź konfigurację tej sekcji w danych
   const section = sectionsData.find((s) => s.id === sectionId);
   if (!section) {
     return (
@@ -31,7 +34,9 @@ const SectionPage: React.FC = () => {
     );
   }
 
+  // Funkcja wybierająca odpowiedni komponent po sectionId
   const renderSectionContent = () => {
+    // wspólne propsy: sectionId + pełny obiekt sekcji
     const commonProps = {
       sectionId: sectionId as keyof PlanChoices,
       section,
@@ -39,27 +44,34 @@ const SectionPage: React.FC = () => {
 
     switch (sectionId) {
       case 'silownia':
+        // GymSection oczekuje { sectionId, section: { options: WorkoutOption[] } }
         return <GymSection {...commonProps} />;
+
       case 'dieta':
-        return <DietSection {...commonProps} 
-          choices={Object.fromEntries(Object.entries(choices).filter(([k, v]) => typeof v === 'number'))}
-          updateChoice={(sectionId: string, optionId: string) => updateChoice(sectionId as keyof PlanChoices, Number(optionId))}
-        />;
-      case 'wakacje':
-        const travelSectionProps = {
-          ...commonProps,
-          section: {
-            ...section,
-            options: section.options.map(option => ({
-              ...option,
-              image: option.image || null,
-              price: option.price,
-              rating: option.rating || 0,
-              features: option.features || [],
-            }))
-          }
-        };
-        return <TravelSection {...travelSectionProps} />;
+        // DietSection używa usePlan() wewnątrz, więc nie musisz przekazywać choices/updateChoice
+        return <DietSection {...commonProps} />;
+
+      case 'wakacje': {
+        // TravelSectionProps wymaga TravelOption[]:  { id, image, name, description, price:number, rating, features }
+        const travelOpts = section.options.map((o) => ({
+          id: o.id,
+          image: o.image,                                    // emoji ReactNode
+          name: o.name,
+          description: o.description,
+          price: o.price,
+          rating: o.rating || 0,
+          features: o.features || [],
+        }));
+
+        return (
+          <TravelSection
+            sectionId={sectionId as keyof PlanChoices}
+            // Podmieniamy tylko pole options na nową, przetworzoną tablicę
+            section={{ ...section, options: travelOpts }}
+          />
+        );
+      }
+
       default:
         return null;
     }
@@ -70,7 +82,10 @@ const SectionPage: React.FC = () => {
       <Navigation />
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <Link to="/" className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+          <Link
+            to="/"
+            className="flex items-center text-gray-600 hover:text-gray-900 mb-4"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Powróć do strony głównej
           </Link>
@@ -81,6 +96,7 @@ const SectionPage: React.FC = () => {
             <p className="text-xl text-gray-600">{section.description}</p>
           </div>
         </div>
+
         {renderSectionContent()}
       </main>
     </div>
