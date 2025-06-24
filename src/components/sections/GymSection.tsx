@@ -21,6 +21,7 @@ import FitnessWizard from '@/components/FitnessWizard';
 import { useUserProfile } from '@/context/UserProfileContext';
 import { usePlan, PlanChoices } from '@/context/PlanContext';
 import { optionCardBase } from '@/components/ui/OptionCard'
+import WorkoutProgressSection from '@/components/WorkoutProgressSection';
 
 interface GymSectionProps {
   sectionId: keyof PlanChoices;
@@ -258,6 +259,7 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
           </div>
         </div>
       )}
+      <WorkoutProgressSection/>
     </div>
   );
 };
