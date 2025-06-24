@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
+import type { PlanChoices } from '@/context/PlanContext';
 import { sectionsData } from '@/data/sections';
 import Navigation from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
@@ -10,7 +11,7 @@ import DietSection from '@/components/sections/DietSection';
 import TravelSection from '@/components/sections/TravelSection';
 
 const SectionPage: React.FC = () => {
-  const { sectionId } = useParams<{ sectionId: string }>();
+  const { sectionId } = useParams<{ sectionId: keyof PlanChoices }>();
   const { choices, updateChoice } = usePlan();
 
   const section = sectionsData.find((s) => s.id === sectionId);
@@ -31,9 +32,8 @@ const SectionPage: React.FC = () => {
   }
 
   const renderSectionContent = () => {
-    const sectionKey = sectionId as keyof PlanChoices;
     const commonProps = {
-      sectionId: sectionKey,
+      sectionId: sectionId as keyof PlanChoices,
       section,
     };
 
@@ -41,16 +41,18 @@ const SectionPage: React.FC = () => {
       case 'silownia':
         return <GymSection {...commonProps} />;
       case 'dieta':
-        return <DietSection {...commonProps} hasNutritionProfile={!!choices.dieta} nutritionProfile={undefined} />;
+        return <DietSection {...commonProps} 
+          choices={Object.fromEntries(Object.entries(choices).filter(([k, v]) => typeof v === 'number'))}
+          updateChoice={(sectionId: string, optionId: string) => updateChoice(sectionId as keyof PlanChoices, Number(optionId))}
+        />;
       case 'wakacje':
-        // Konwersja Option[] na TravelOption[]
         const travelSectionProps = {
           ...commonProps,
           section: {
             ...section,
             options: section.options.map(option => ({
               ...option,
-              image: option.image || null, // lub inny domyślny element React
+              image: option.image || null,
               price: Number(option.price) || 0,
               rating: option.rating || 0,
               features: option.features || [],
@@ -58,6 +60,8 @@ const SectionPage: React.FC = () => {
           }
         };
         return <TravelSection {...travelSectionProps} />;
+      default:
+        return null;
     }
   };
 
@@ -77,7 +81,7 @@ const SectionPage: React.FC = () => {
             <p className="text-xl text-gray-600">{section.description}</p>
           </div>
         </div>
-        {Content}
+        {renderSectionContent()}
       </main>
     </div>
   );

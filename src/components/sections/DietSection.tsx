@@ -30,8 +30,7 @@ const DietSection: React.FC<DietSectionProps> = ({
   const { profile } = useUserProfile();
 
   // Profil dietetyczny uznajemy za kompletny jeśli mamy kcal i liczbę posiłków
-  const hasNutritionProfile =
-    !!profile.dailyCalories && !!profile.mealsPerDay;
+  const hasNutritionProfile = !!profile.dailyCalories && !!profile.mealsPerDay;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">
@@ -134,45 +133,6 @@ const DietSection: React.FC<DietSectionProps> = ({
                 )}
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   {opt.name}
-        )}
-
-        {/* przycisk AI-wizarda */}
-        <div className="text-center">
-          <Button
-            variant={hasNutritionProfile ? 'outline' : undefined}
-            className={
-              hasNutritionProfile
-                ? ''
-                : 'bg-gradient-to-r from-green-600 to-blue-600 text-white'
-            }
-            onClick={() => setWizardOpen(true)}
-          >
-            {hasNutritionProfile
-              ? '✏️ Edytuj profil dietetyczny AI'
-              : '🥗 Stwórz profil dietetyczny AI'}
-          </Button>
-          <p className="text-gray-600 mt-2">lub wybierz gotowy catering poniżej</p>
-        </div>
-
-        {/* grid kafelków */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {section.options.map(option => {
-            const isSel = choices[sectionId] === option.id;
-            return (
-              <div
-                key={option.id}
-                className={
-                  optionCardBase +
-                  'p-8 ' +
-                  (isSel
-                    ? 'border-2 border-green-600 transform scale-105'
-                    : 'hover:border-green-300')
-                }
-                onClick={() => setExpanded(option)}
-              >
-                <div className="text-4xl mb-4 text-center">{option.image}</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2 text-center">
-                  {option.name}
                 </h3>
                 <p className="text-gray-600 text-sm mb-4">
                   {opt.description}

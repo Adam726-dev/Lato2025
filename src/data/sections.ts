@@ -44,7 +44,6 @@ export const sectionsData: Section[] = [
         name: "BeachBody Catering",
         description: "Dieta dopasowana do aktywnego trybu życia",
         price: "45 zł/dzień",
-        price: "45 zł/dzień",
         kcal: 1800,
         features: ["Dostawa codziennie", "3 posiłki + przekąska", "Bez glutenu"],
         rating: 4.8,
@@ -58,8 +57,6 @@ export const sectionsData: Section[] = [
       {
         id: 2,
         name: "Summer Fresh",
-        description: "Lekkie posiłki pełne świeżych skłdników",
-        price: "38 zł/dzień",
         description: "Lekkie posiłki pełne świeżych składników",
         price: "38 zł/dzień",
         kcal: 1500,
@@ -77,7 +74,6 @@ export const sectionsData: Section[] = [
         name: "FitMeals Pro",
         description: "Sportowa dieta dla maksymalnych rezultatów",
         price: "52 zł/dzień",
-        price: "52 zł/dzień",
         kcal: 2200,
         features: ["Wysoki protein", "Suplementy", "5 posiłków"],
         rating: 4.9,
@@ -92,7 +88,6 @@ export const sectionsData: Section[] = [
         id: 4,
         name: "Mediterranean Style",
         description: "Klasyczna dieta śródziemnomorska",
-        price: "42 zł/dzień",
         price: "42 zł/dzień",
         kcal: 1900,
         features: ["Zdrowe tłuszcze", "Ryby 3× w tygodniu", "Oliwa z oliwek"],
@@ -109,7 +104,6 @@ export const sectionsData: Section[] = [
         name: "Vege Power",
         description: "Wegańska dieta bogata w białko",
         price: "40 zł/dzień",
-        price: "40 zł/dzień",
         kcal: 1700,
         features: ["100% roślinna", "Wysoka zawartość białka", "Bez laktozy"],
         rating: 4.5,
@@ -124,7 +118,6 @@ export const sectionsData: Section[] = [
         id: 6,
         name: "Low Carb Fit",
         description: "Dieta niskowęglowodanowa dla redukcji",
-        price: "44 zł/dzień",
         price: "44 zł/dzień",
         kcal: 1600,
         features: ["Niska zawartość węglowodanów", "Wysoka zawartość tłuszczu"],
@@ -141,7 +134,6 @@ export const sectionsData: Section[] = [
         name: "Keto Master",
         description: "Dieta ketogeniczna dla zaawansowanych",
         price: "50 zł/dzień",
-        price: "50 zł/dzień",
         kcal: 2000,
         features: ["Keto posiłki", "Bez cukru", "Wysoki tłuszcz"],
         rating: 4.6,
@@ -156,7 +148,6 @@ export const sectionsData: Section[] = [
         id: 8,
         name: "Gluten Free Life",
         description: "Dieta bezglutenowa dla wrażliwych",
-        price: "43 zł/dzień",
         price: "43 zł/dzień",
         kcal: 1800,
         features: ["Bez glutenu", "Zbilansowane składniki"],
@@ -173,15 +164,14 @@ export const sectionsData: Section[] = [
         name: "Klasyka Polska",
         description: "Tradycyjne polskie smaki w zdrowej wersji",
         price: "39 zł/dzień",
-        price: "39 zł/dzień",
         kcal: 1850,
         features: ["Tradycyjne dania", "Zdrowe zamienniki"],
         rating: 4.2,
         sampleMenu: {
           śniadanie: "Jajecznica z pomidorami i szczypiorkiem",
-          obiad: "Pierś z kurczaka po polsku z ziemniakami",
-          podwieczorek: "Sernik na zimno z owocami",
-          kolacja: "Zupa ogórkowa z koperkiem"
+          obiad: "Schabowy z ziemniakami i surówką",
+          podwieczorek: "Sernik light",
+          kolacja: "Sałatka jarzynowa z jogurtem"
         }
       }
     ]
