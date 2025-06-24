@@ -33,7 +33,7 @@ const ApiKeyManager: React.FC = () => {
 
   return (
     <Card className="mb-6">
-      <CardHeader>
+      {/* <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Key className="h-5 w-5" />
           Konfiguracja API Gemini
@@ -87,7 +87,7 @@ const ApiKeyManager: React.FC = () => {
             </p>
           </div>
         )}
-      </CardContent>
+      </CardContent> */}
     </Card>
   );
 };
