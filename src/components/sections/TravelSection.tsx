@@ -33,7 +33,7 @@ interface TravelOption {
   image: React.ReactNode
   name: string
   description: string
-  price: number
+  price: string
   rating: number
   features: string[]
 }
@@ -188,6 +188,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
               key={opt.id}
               onClick={() => setExpanded(opt)}
               className={`
+                relative ${isSel ? 'z-20' : 'z-10'} hover:z-30
                 ${optionCardBase} +
                 ''
                 ${isSel

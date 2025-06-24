@@ -53,7 +53,7 @@ const SectionPage: React.FC = () => {
             options: section.options.map(option => ({
               ...option,
               image: option.image || null,
-              price: Number(option.price) || 0,
+              price: option.price,
               rating: option.rating || 0,
               features: option.features || [],
             }))
