@@ -110,7 +110,7 @@ const DietSection: React.FC<DietSectionProps> = ({
                   'p-8 ' +
                   (isSel
                     ? 'border-2 border-green-600 transform scale-105'
-                    : '')
+                    : 'hover:border-green-300')
                 }
                 onClick={() => setExpanded(option)}
               >

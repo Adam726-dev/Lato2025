@@ -191,7 +191,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
                 ${optionCardBase} +
                 ''
                 ${isSel
-                  ? 'border-2 border-yellow-500 bg-blue-50'
+                  ? 'border-2 border-yellow-500 bg-blue-50 transform scale-105'
                   : 'hover:border-yellow-300'}
               `}
             >
@@ -203,8 +203,10 @@ const TravelSection: React.FC<TravelSectionProps> = ({
                   {opt.price}
                 </div>
                 <div
-                  className={`text-sm font-medium flex items-center justify-center gap-1 ${
-                    isSel ? 'text-yellow-700' : 'text-yellow-600'
+                  className={`text-sm font-medium flex items-center justify-center gap-1 
+                    ${isSel 
+                      ? 'text-yellow-700' 
+                      : 'text-yellow-600'
                   }`}
                 >
                   {isSel ? 'Wybrane' : 'Szczegóły'}{' '}

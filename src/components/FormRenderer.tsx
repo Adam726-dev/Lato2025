@@ -52,7 +52,6 @@ const FormRenderer: React.FC<FormRendererProps> = ({ formType, sectionId, onComp
       default:
         if (sectionId === 'silownia') return <FitnessWizard onComplete={onComplete} />;
         if (sectionId === 'dieta') return <CateringMatcher onComplete={onComplete} />;
-        if (sectionId === 'imprezy') return <ActivityWizard onComplete={onComplete} />;
         if (sectionId === 'wakacje') return <TravelWizard onComplete={onComplete} />;
         return null;
     }

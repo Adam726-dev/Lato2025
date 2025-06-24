@@ -15,6 +15,9 @@ export interface Option {
   rating: number;
   sampleMenu?: SampleMenu; // <- zmiana tutaj!
   image?: string;
+  startDate?: string;
+  endDate?: string;
+  customLabel?: string;
 }
 
 export interface Section {
@@ -38,7 +41,7 @@ export const sectionsData: Section[] = [
         id: 1,
         name: "BeachBody Catering",
         description: "Dieta dopasowana do aktywnego trybu życia",
-        price: "45",
+        price: "45 zł/dzień",
         kcal: 1800,
         features: ["Dostawa codziennie", "3 posiłki + przekąska", "Bez glutenu"],
         rating: 4.8,
@@ -53,7 +56,7 @@ export const sectionsData: Section[] = [
         id: 2,
         name: "Summer Fresh",
         description: "Lekkie posiłki pełne świeżych składników",
-        price: "38",
+        price: "38 zł/dzień",
         kcal: 1500,
         features: ["Warzywne opcje", "Lokalne składniki"],
         rating: 4.6,
@@ -68,7 +71,7 @@ export const sectionsData: Section[] = [
         id: 3,
         name: "FitMeals Pro",
         description: "Sportowa dieta dla maksymalnych rezultatów",
-        price: "52",
+        price: "52 zł/dzień",
         kcal: 2200,
         features: ["Wysoki protein", "Suplementy", "5 posiłków"],
         rating: 4.9,
@@ -83,7 +86,7 @@ export const sectionsData: Section[] = [
         id: 4,
         name: "Mediterranean Style",
         description: "Klasyczna dieta śródziemnomorska",
-        price: "42",
+        price: "42 zł/dzień",
         kcal: 1900,
         features: ["Zdrowe tłuszcze", "Ryby 3x w tygodniu", "Oliwa z oliwek"],
         rating: 4.7,
@@ -98,7 +101,7 @@ export const sectionsData: Section[] = [
         id: 5,
         name: "Vege Power",
         description: "Wegańska dieta bogata w białko",
-        price: "40",
+        price: "40 zł/dzień",
         kcal: 1700,
         features: ["100% roślinna", "Wysoka zawartość białka", "Bez laktozy"],
         rating: 4.5,
@@ -113,7 +116,7 @@ export const sectionsData: Section[] = [
         id: 6,
         name: "Low Carb Fit",
         description: "Dieta niskowęglowodanowa dla redukcji",
-        price: "44",
+        price: "44 zł/dzień",
         kcal: 1600,
         features: ["Niska zawartość węglowodanów", "Wysoka zawartość tłuszczu"],
         rating: 4.4,
@@ -128,7 +131,7 @@ export const sectionsData: Section[] = [
         id: 7,
         name: "Keto Master",
         description: "Dieta ketogeniczna dla zaawansowanych",
-        price: "50",
+        price: "50 zł/dzień",
         kcal: 2000,
         features: ["Keto posiłki", "Bez cukru", "Wysoki tłuszcz"],
         rating: 4.6,
@@ -143,7 +146,7 @@ export const sectionsData: Section[] = [
         id: 8,
         name: "Gluten Free Life",
         description: "Dieta bezglutenowa dla wrażliwych",
-        price: "43",
+        price: "43 zł/dzień",
         kcal: 1800,
         features: ["Bez glutenu", "Zbilansowane składniki"],
         rating: 4.3,
@@ -158,7 +161,7 @@ export const sectionsData: Section[] = [
         id: 9,
         name: "Klasyka Polska",
         description: "Tradycyjne polskie smaki w zdrowej wersji",
-        price: "39",
+        price: "39 zł/dzień",
         kcal: 1850,
         features: ["Tradycyjne dania", "Zdrowe zamienniki"],
         rating: 4.2,
@@ -260,96 +263,6 @@ export const sectionsData: Section[] = [
       image: '🌿',
       features: ['Joga', 'Medytacja', 'Saunarium', 'Masaże']
     }
-    ]
-  },
-  {
-    id: 'imprezy',
-    name: 'Imprezy',
-    icon: '🎉',
-    color: 'bg-summer-purple',
-    description: 'Najgorętsze eventy tego lata',
-    options: [
-      {
-        id: 1,
-        name: 'Open Fest Music',
-        description: 'Trzydniowy festival muzyczny pod gwiazdami',
-        price: '299 zł/bilet',
-        rating: 4.9,
-        image: '🎪',
-        features: ['20+ artystów', 'Camping', 'Food trucki', '3 dni muzyki', 'Strefa chillout']
-      },
-      {
-        id: 2,
-        name: 'Beach Party Series',
-        description: 'Cotygodniowe imprezy na plaży',
-        price: '45 zł/wydarzenie',
-        rating: 4.7,
-        image: '🏖️',
-        features: ['DJ sets', 'Koktajle', 'Zachód słońca', 'Dancing on sand', 'Bonfire']
-      },
-      {
-        id: 3,
-        name: 'Rooftop Nights',
-        description: 'Ekskluzywne imprezy na dachach miasta',
-        price: '89 zł/wieczór',
-        rating: 4.8,
-        image: '🌃',
-        features: ['Premium drinki', 'View na miasto', 'Dress code', 'Live DJ', 'VIP area']
-      },
-      {
-        id: 4,
-        name: 'Festival Smaków',
-        description: 'Kulinarny festiwal z muzyką na żywo',
-        price: '65 zł/dzień',
-        rating: 4.6,
-        image: '🍽️',
-        features: ['Local food', 'Wine tasting', 'Warsztaty gotowania', 'Acoustic stage', 'Family friendly']
-      },
-      {
-      id: 6,
-      name: 'Retro Disco Party',
-      description: 'Najlepsze hity lat 70. i 80. w rytmie disco',
-      price: '49 zł/wydarzenie',
-      rating: 4.4,
-      image: '🕺',
-      features: ['DJ z płyt winylowych', 'Konkurs na najlepszy strój', 'Klimatyczne światła']
-      },
-      {
-        id: 7,
-        name: 'Silent Cinema Night',
-        description: 'Pokaz filmowy pod gwiazdami – słuchawki w cenie',
-        price: '59 zł/bilet',
-        rating: 4.5,
-        image: '🎬',
-        features: ['5 kultowych filmów', 'Dźwięk na słuchawkach', 'Snack bar']
-      },
-      {
-        id: 8,
-        name: 'Open-Air Jazz Evening',
-        description: 'Romantyczny wieczór z jazzowymi standardami',
-        price: '89 zł/bilet',
-        rating: 4.7,
-        image: '🎷',
-        features: ['Na żywo: 5-osobowy zespół', 'Strefa lounge', 'Degustacja win']
-      },
-      {
-        id: 9,
-        name: 'Food Truck Fiesta',
-        description: 'Najlepsze food trucki i street food w jednym miejscu',
-        price: 'Wejście free',
-        rating: 4.9,
-        image: '🚚',
-        features: ['20 food trucków', 'Strefa dziecięca', 'Muzyka na żywo']
-      },
-      {
-        id: 10,
-        name: 'Neon Rave Party',
-        description: 'Impreza w stylu rave z UV i laserami',
-        price: '79 zł/wydarzenie',
-        rating: 4.3,
-        image: '🌌',
-        features: ['UV painting', 'Laser show', 'After till dawn']
-      },
     ]
   },
   {

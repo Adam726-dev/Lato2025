@@ -9,7 +9,6 @@ import { ArrowLeft } from 'lucide-react';
 import GymSection from '@/components/sections/GymSection';
 import DietSection from '@/components/sections/DietSection';
 import TravelSection from '@/components/sections/TravelSection';
-import DefaultSection from '@/components/sections/DefaultSection';
 
 const SectionPage = () => {
   const { sectionId } = useParams<{ sectionId: string }>();
@@ -34,22 +33,33 @@ const SectionPage = () => {
   }
 
   const renderSectionContent = () => {
+    const sectionKey = sectionId as keyof PlanChoices;
     const commonProps = {
-      sectionId: sectionId!,
+      sectionId: sectionKey,
       section,
-      choices,
-      updateChoice: (sectionId: string, optionId: string) => updateChoice(sectionId as keyof typeof choices, Number(optionId))
     };
 
     switch (sectionId) {
       case 'silownia':
         return <GymSection {...commonProps} />;
       case 'dieta':
-        return <DietSection {...commonProps} hasNutritionProfile={!!choices.dieta} choices={Object.fromEntries(Object.entries(choices).filter(([key, value]) => typeof value === 'number'))} updateChoice={(sectionId, optionId) => updateChoice(sectionId as keyof PlanChoices, Number(optionId))} />;
+        return <DietSection {...commonProps} hasNutritionProfile={!!choices.dieta} nutritionProfile={undefined} />;
       case 'wakacje':
-        return <TravelSection {...commonProps} />;
-      default:
-        return <DefaultSection {...commonProps} />;
+        // Konwersja Option[] na TravelOption[]
+        const travelSectionProps = {
+          ...commonProps,
+          section: {
+            ...section,
+            options: section.options.map(option => ({
+              ...option,
+              image: option.image || null, // lub inny domyślny element React
+              price: Number(option.price) || 0,
+              rating: option.rating || 0,
+              features: option.features || [],
+            }))
+          }
+        };
+        return <TravelSection {...travelSectionProps} />;
     }
   };
 

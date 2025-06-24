@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { usePlan } from '@/context/PlanContext';
@@ -8,6 +7,12 @@ import Navigation from '@/components/Navigation';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
+
+const sectionColors: Record<string, string> = {
+  dieta:    'bg-green-400',
+  silownia: 'bg-red-400',
+  wakacje:  'bg-yellow-500',
+};
 
 const Index = () => {
   const { isLoggedIn } = useAuth();
@@ -35,8 +40,7 @@ const Index = () => {
             Twój Plan na <span className="text-summer-blue">Lato</span> ☀️
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Stwórz idealny plan na najbardziej gorące miesiące roku. Wybierz dietę, siłownię, 
-            imprezy i wakacje dopasowane do Twoich potrzeb!
+            Stwórz idealny plan na najbardziej gorące miesiące roku. Wybierz dietę, siłownię i wakacje dopasowane do Twoich potrzeb!
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -63,33 +67,46 @@ const Index = () => {
         </div>
 
         {/* Sections Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {sectionsData.map((section) => {
-            const hasChoice = choices[section.id as keyof typeof choices];
-            const selectedOption = hasChoice && section.options 
-              ? section.options.find(opt => opt.id === hasChoice)
-              : null;
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 w-full">
+          {sectionsData.filter(section => section.id !== 'imprezy').map(section => {
+            // wyciągamy surową wartość z choices
+            const raw = choices[section.id as keyof typeof choices];
+            
+            // jeśli to imprezy, raw może być tablicą number[]
+            // USUNIĘTO OBSŁUGĘ IMPREZ
+            let label: string;
+            if (section.id === 'imprezy') {
+              label = '';
+            } else {
+              if (typeof raw === 'number') {
+                label = section.options.find(o => o.id === raw)?.name ?? 'Nie wybrano';
+              } else {
+                label = 'Nie wybrano';
+              }
+            }
 
             return (
-              <div key={section.id} className="animate-scale-in">
+              <div key={section.id} className="animate-scale-in w-full">
                 <Link to={`/${section.id}`}>
-                  <div className={`${section.color} border-0 shadow-lg card-hover cursor-pointer relative overflow-hidden rounded-lg`}>
+                  <div className={`
+                    ${sectionColors[section.id] ?? 'bg-gray-100'}
+                    rounded-lg overflow-hidden shadow-lg cursor-pointer w-full
+                    transition-transform duration-200 hover:scale-105 hover:shadow-2xl hover:ring-4 hover:ring-gray-300/60
+                  `}>
                     <div className="p-6 text-center">
                       <div className="text-4xl mb-3">{section.icon}</div>
                       <h3 className="text-xl font-bold text-white mb-2">{section.name}</h3>
                       <p className="text-white/90 text-sm mb-4">{section.description}</p>
-                      
-                      {hasChoice && selectedOption ? (
-                        <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold text-white mb-3">
-                          ✓ {selectedOption.name}
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center rounded-full bg-white/20 border border-white/30 px-2.5 py-0.5 text-xs font-semibold text-white mb-3">
-                          Nie wybrano
-                        </span>
-                      )}
-                      
-                      <div className="flex items-center justify-center text-white/80">
+                      <span className={`
+                        inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                        ${label === 'Nie wybrano'
+                          ? 'bg-white/20 border border-white/30 text-white'
+                          : 'bg-white/20 text-white'}
+                      `}>
+                        {label !== 'Nie wybrano' && <span className="mr-2">✓</span>}
+                        {label}
+                      </span>
+                      <div className="flex items-center justify-center mt-3 text-white/80">
                         <span className="text-sm">Wybierz opcję</span>
                         <ChevronRight className="h-4 w-4 ml-1" />
                       </div>
