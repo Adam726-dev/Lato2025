@@ -9,7 +9,7 @@ interface GeminiResponse {
 }
 
 export const generatePersonalizedPlan = async (userData: any): Promise<GeminiResponse> => {
-  const apiKey = localStorage.getItem('gemini-api-key');
+  const apiKey = localStorage.getItem('gemini-api-key') || import.meta.env.VITE_GEMINI_API_KEY;
   
   if (!apiKey) {
     throw new Error('API Key nie został znaleziony. Proszę dodać klucz API w ustawieniach.');

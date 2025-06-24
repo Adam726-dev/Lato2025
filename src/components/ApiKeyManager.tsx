@@ -9,7 +9,7 @@ const ApiKeyManager: React.FC = () => {
   const [isKeySet, setIsKeySet] = useState(false);
 
   useEffect(() => {
-    const savedKey = localStorage.getItem('gemini-api-key');
+    const savedKey = localStorage.getItem('gemini-api-key') || import.meta.env.VITE_GEMINI_API_KEY;
     if (savedKey) {
       setApiKey(savedKey);
       setIsKeySet(true);
