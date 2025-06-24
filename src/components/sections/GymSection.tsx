@@ -37,6 +37,7 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
   const [selectedDayId, setSelectedDayId] = useState<string>('');
   const [showTracker, setShowTracker] = useState(false);
   const [showFitnessWizard, setShowFitnessWizard] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
 
   // stan dla rozwiniętej kafelki siłowni
   const [modalOption, setModalOption] = useState<any | null>(null);
@@ -50,6 +51,8 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
     setSelectedDayId(dayId);
     setShowTracker(true);
   };
+
+
   const handleBackToPlans = () => {
     setShowTracker(false);
     setSelectedPlan(null);
@@ -80,6 +83,13 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
       <div className="max-w-4xl mx-auto flex justify-between items-center">
         <h2 className="text-2xl font-bold">Twój Plan Treningowy AI</h2>
         <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={() => setShowProgress(prev => !prev)}
+            className="flex items-center gap-2"
+          >
+            <User className="h-4 w-4" /> Postępy
+          </Button>
           <Button
             variant="outline"
             onClick={handleEditProfile}
@@ -164,6 +174,8 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
           </CardContent>
         </Card>
       )}
+
+      {showProgress && <WorkoutProgressSection />}
 
       {/*Siatka kafelków*/}
       <div className="max-w-6xl mx-auto space-y-6">
