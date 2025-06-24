@@ -15,7 +15,6 @@ type Selected = { section: Section; option: Option };
 const sectionColors: Record<string, string> = {
   dieta: 'bg-green-500',
   silownia: 'bg-red-400',
-  imprezy: 'bg-purple-500',
   wakacje: 'bg-yellow-500',
 };
 
@@ -26,18 +25,13 @@ const Summary: React.FC = () => {
   const navigate = useNavigate();
   const [showInfo, setShowInfo] = useState(false);
 
-  // Zbierz wszystkie wybrane pozycje, uwzględniając multi-wybór imprez
+  // Zbierz wszystkie wybrane pozycje, bez multi-wyboru imprez
   const selectedSections: Selected[] = [];
   for (const [sectionId, raw] of Object.entries(choices)) {
+    if (sectionId === 'imprezy') continue;
     const section = sectionsData.find(s => s.id === sectionId);
     if (!section) continue;
-
-    if (sectionId === 'imprezy' && Array.isArray(raw)) {
-      raw.forEach(optionId => {
-        const opt = section.options.find(o => o.id === optionId);
-        if (opt) selectedSections.push({ section, option: opt });
-      });
-    } else if (typeof raw === 'number') {
+    if (typeof raw === 'number') {
       const opt = section.options.find(o => o.id === raw);
       if (opt) selectedSections.push({ section, option: opt });
     }
@@ -163,13 +157,6 @@ const Summary: React.FC = () => {
                         </button>
                       </Link>
                     )}
-                    {section.id === 'imprezy' && (
-                      <Link to="/voucher/imprezy">
-                        <button className="mt-4 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-md w-full">
-                          Zarezerwuj bilet
-                        </button>
-                      </Link>
-                    )}
                     {section.id === 'wakacje' && (
                       <Link to="/voucher/wakacje">
                         <button className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md w-full">
@@ -181,24 +168,12 @@ const Summary: React.FC = () => {
                 </div>
                 {/* Usuń / Zmień */}
                 <div className="flex gap-4 mt-4">
-                  {section.id === 'imprezy'
-                    ? (
-                      <button
-                        onClick={() => updateChoice('imprezy', option.id)}
-                        className="flex-1 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-100"
-                      >
-                        Anuluj
-                      </button>
-                    )
-                    : (
-                      <button
-                        onClick={() => removeChoice(section.id as keyof PlanChoices)}
-                        className="flex-1 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-100"
-                      >
-                        Usuń
-                      </button>
-                    )
-                  }
+                  <button
+                    onClick={() => removeChoice(section.id as keyof PlanChoices)}
+                    className="flex-1 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-100"
+                  >
+                    Usuń
+                  </button>
                   <button
                     onClick={() => navigate(`/${section.id}`)}
                     className="flex-1 py-3 border-2 border-blue-500 text-blue-500 font-semibold rounded-lg hover:bg-blue-100"

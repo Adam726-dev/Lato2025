@@ -18,7 +18,6 @@ const VoucherPage: React.FC = () => {
   const sectionNames: Record<string, string> = {
     silownia: "Karnet",
     dieta: "Dieta",
-    imprezy: "Bilet",
     wakacje: "Wakacje"
   };
 

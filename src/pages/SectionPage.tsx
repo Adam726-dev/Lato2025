@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
+import type { PlanChoices } from '@/context/PlanContext';
 import { sectionsData } from '@/data/sections';
 import Navigation from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
@@ -8,10 +9,9 @@ import { ArrowLeft } from 'lucide-react';
 import GymSection from '@/components/sections/GymSection';
 import DietSection from '@/components/sections/DietSection';
 import TravelSection from '@/components/sections/TravelSection';
-import DefaultSection from '@/components/sections/DefaultSection';
 
 const SectionPage: React.FC = () => {
-  const { sectionId } = useParams<{ sectionId: string }>();
+  const { sectionId } = useParams<{ sectionId: keyof PlanChoices }>();
   const { choices, updateChoice } = usePlan();
 
   const section = sectionsData.find((s) => s.id === sectionId);
@@ -31,28 +31,39 @@ const SectionPage: React.FC = () => {
     );
   }
 
-  const commonProps = {
-    sectionId: sectionId!,
-    section,
-    choices,
-    updateChoice: (sid: string, oid: string) =>
-      updateChoice(sid as keyof typeof choices, Number(oid)),
-  };
+  const renderSectionContent = () => {
+    const commonProps = {
+      sectionId: sectionId as keyof PlanChoices,
+      section,
+    };
 
-  let Content;
-  switch (sectionId) {
-    case 'silownia':
-      Content = <GymSection {...commonProps} />;
-      break;
-    case 'dieta':
-      Content = <DietSection {...commonProps} />;
-      break;
-    case 'wakacje':
-      Content = <TravelSection {...commonProps} />;
-      break;
-    default:
-      Content = <DefaultSection {...commonProps} />;
-  }
+    switch (sectionId) {
+      case 'silownia':
+        return <GymSection {...commonProps} />;
+      case 'dieta':
+        return <DietSection {...commonProps} 
+          choices={Object.fromEntries(Object.entries(choices).filter(([k, v]) => typeof v === 'number'))}
+          updateChoice={(sectionId: string, optionId: string) => updateChoice(sectionId as keyof PlanChoices, Number(optionId))}
+        />;
+      case 'wakacje':
+        const travelSectionProps = {
+          ...commonProps,
+          section: {
+            ...section,
+            options: section.options.map(option => ({
+              ...option,
+              image: option.image || null,
+              price: option.price,
+              rating: option.rating || 0,
+              features: option.features || [],
+            }))
+          }
+        };
+        return <TravelSection {...travelSectionProps} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
@@ -70,7 +81,7 @@ const SectionPage: React.FC = () => {
             <p className="text-xl text-gray-600">{section.description}</p>
           </div>
         </div>
-        {Content}
+        {renderSectionContent()}
       </main>
     </div>
   );

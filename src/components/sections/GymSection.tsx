@@ -175,11 +175,11 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
                 key={option.id}
                 onClick={() => setModalOption(option)}
                 className={`
-                  ${optionCardBase}
-                  p-6
+                  ${optionCardBase} +
+                  'p-6'
                   ${isSelected
-                    ? 'border-2 border-red-600 bg-red-50'
-                    : ''}
+                    ? 'border-2 border-red-600 bg-red-50 transform scale-105'
+                    : 'hover:border-red-300'}
                 `}
               >
                 <div className="p-6 text-center">
@@ -233,7 +233,7 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
               </div>
               <div className="flex gap-4">
                 <Button
-                  className="flex-1 bg-red-100 hover:bg-red-200 text-red-800"
+                  className="flex-1 bg-red-100 border-red-200 border-2 hover:bg-red-200 text-red-800"
                   onClick={() => {
                     updateChoice(sectionId, modalOption.id);
                     setModalOption(null);

@@ -30,8 +30,7 @@ const DietSection: React.FC<DietSectionProps> = ({
   const { profile } = useUserProfile();
 
   // Profil dietetyczny uznajemy za kompletny jeśli mamy kcal i liczbę posiłków
-  const hasNutritionProfile =
-    !!profile.dailyCalories && !!profile.mealsPerDay;
+  const hasNutritionProfile = !!profile.dailyCalories && !!profile.mealsPerDay;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">

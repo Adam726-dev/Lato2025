@@ -13,9 +13,13 @@ export interface Option {
   description: string;
   price: string;
   kcal?: number;
-  features: string[];
+  features?: string[];
   rating: number;
-  sampleMenu?: SampleMenu;
+  sampleMenu?: SampleMenu; // <- zmiana tutaj!
+  image?: string;
+  startDate?: string;
+  endDate?: string;
+  customLabel?: string;
 }
 
 export interface Section {
@@ -53,7 +57,7 @@ export const sectionsData: Section[] = [
       {
         id: 2,
         name: "Summer Fresh",
-        description: "Lekkie posiłki pełne świeżych skłdników",
+        description: "Lekkie posiłki pełne świeżych składników",
         price: "38 zł/dzień",
         kcal: 1500,
         features: ["Warzywne opcje", "Lokalne składniki"],
@@ -165,9 +169,9 @@ export const sectionsData: Section[] = [
         rating: 4.2,
         sampleMenu: {
           śniadanie: "Jajecznica z pomidorami i szczypiorkiem",
-          obiad: "Pierś z kurczaka po polsku z ziemniakami",
-          podwieczorek: "Sernik na zimno z owocami",
-          kolacja: "Zupa ogórkowa z koperkiem"
+          obiad: "Schabowy z ziemniakami i surówką",
+          podwieczorek: "Sernik light",
+          kolacja: "Sałatka jarzynowa z jogurtem"
         }
       }
     ]
@@ -255,87 +259,6 @@ export const sectionsData: Section[] = [
     ]
   },
   {
-    id: "imprezy",
-    name: "Imprezy",
-    icon: "🎉",
-    color: "bg-summer-purple",
-    description: "Najgorętsze eventy tego lata",
-    options: [
-      {
-        id: 1,
-        name: "Open Fest Music",
-        description: "Trzydniowy festival muzyczny pod gwiazdami",
-        price: "299 zł/bilet",
-        rating: 4.9,
-        features: ["20+ artystów", "Camping", "Food trucki", "3 dni muzyki", "Strefa chillout"]
-      },
-      {
-        id: 2,
-        name: "Beach Party Series",
-        description: "Cotygodniowe imprezy na plaży",
-        price: "45 zł/wydarzenie",
-        rating: 4.7,
-        features: ["DJ sets", "Koktajle", "Zachód słońca", "Dancing on sand", "Bonfire"]
-      },
-      {
-        id: 3,
-        name: "Rooftop Nights",
-        description: "Ekskluzywne imprezy na dachach miasta",
-        price: "89 zł/wieczór",
-        rating: 4.8,
-        features: ["Premium drinki", "View na miasto", "Dress code", "Live DJ", "VIP area"]
-      },
-      {
-        id: 4,
-        name: "Festival Smaków",
-        description: "Kulinarny festiwal z muzyką na żywo",
-        price: "65 zł/dzień",
-        rating: 4.6,
-        features: ["Local food", "Wine tasting", "Warsztaty gotowania", "Acoustic stage", "Family friendly"]
-      },
-      {
-        id: 6,
-        name: "Retro Disco Party",
-        description: "Najlepsze hity lat 70. i 80. w rytmie disco",
-        price: "49 zł/wydarzenie",
-        rating: 4.4,
-        features: ["DJ z płyt winylowych", "Konkurs na najlepszy strój", "Klimatyczne światła"]
-      },
-      {
-        id: 7,
-        name: "Silent Cinema Night",
-        description: "Pokaz filmowy pod gwiazdami – słuchawki w cenie",
-        price: "59 zł/bilet",
-        rating: 4.5,
-        features: ["5 kultowych filmów", "Dźwięk na słuchawkach", "Snack bar"]
-      },
-      {
-        id: 8,
-        name: "Open-Air Jazz Evening",
-        description: "Romantyczny wieczór z jazzowymi standardami",
-        price: "89 zł/bilet",
-        rating: 4.7,
-        features: ["Na żywo: 5-osobowy zespół", "Strefa lounge", "Degustacja win"]
-      },
-      {
-        id: 9,
-        name: "Food Truck Fiesta",
-        description: "Najlepsze food trucki i street food w jednym miejscu",
-        price: "Wejście free",
-        rating: 4.9,
-        features: ["20 food trucków", "Strefa dziecięca", "Muzyka na żywo"]
-      },
-      {
-        id: 10,
-        name: "Neon Rave Party",
-        description: "Impreza w stylu rave z UV i laserami",
-        price: "79 zł/wydarzenie",
-        rating: 4.3,
-        features: ["UV painting", "Laser show", "After till dawn"]
-      }
-    ]
-  },
-  {
     id: "wakacje",
     name: "Wakacje",
     icon: "✈️",
@@ -345,6 +268,7 @@ export const sectionsData: Section[] = [
       {
         id: 1,
         name: "Greckie Wyspy",
+        image: "🏝️",
         description: "Magiczna Santorini i Mykonos w jednej podróży",
         price: "2599 zł/osoba",
         rating: 4.9,
@@ -353,6 +277,7 @@ export const sectionsData: Section[] = [
       {
         id: 2,
         name: "Bałtycki Roadtrip",
+        image: "🚗",
         description: "Odkryj piękno polskiego wybrzeża",
         price: "899 zł/osoba",
         rating: 4.5,
@@ -361,6 +286,7 @@ export const sectionsData: Section[] = [
       {
         id: 3,
         name: "Tatrzańska Przygoda",
+        image: "⛰️",
         description: "Górskie szlaki i relaks w spa",
         price: "1299 zł/osoba",
         rating: 4.7,
@@ -369,6 +295,7 @@ export const sectionsData: Section[] = [
       {
         id: 4,
         name: "Włoskie Wybrzeże",
+        image: "🍋",
         description: "Amalfi Coast – raj na ziemi",
         price: "3299 zł/osoba",
         rating: 4.8,
@@ -377,6 +304,7 @@ export const sectionsData: Section[] = [
       {
         id: 5,
         name: "Islandzkie Krajobrazy",
+        image: "🌋",
         description: "Gejzery, wulkany i zorza polarna",
         price: "2199 zł/osoba",
         rating: 4.6,
@@ -385,6 +313,7 @@ export const sectionsData: Section[] = [
       {
         id: 6,
         name: "Hiszpańska Fiesta",
+        image: "💃",
         description: "Tapas, flamenco i plaże Costa Brava",
         price: "1799 zł/osoba",
         rating: 4.7,
@@ -393,6 +322,7 @@ export const sectionsData: Section[] = [
       {
         id: 7,
         name: "Safari w Afryce",
+        image: "🦁",
         description: "Spotkania z dziką przyrodą na Serengeti",
         price: "4599 zł/osoba",
         rating: 4.9,
@@ -401,6 +331,7 @@ export const sectionsData: Section[] = [
       {
         id: 8,
         name: "Weneckie Rejsy",
+        image: "🚤",
         description: "Romantyczny tydzień na kanałach Wenecji",
         price: "2499 zł/osoba",
         rating: 4.5,

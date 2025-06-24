@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface AIEnhancementNoticeProps {
@@ -26,8 +25,6 @@ const AIEnhancementNotice: React.FC<AIEnhancementNoticeProps> = ({
         return 'Personal Trainer AI przeanalizował Twoje cele i kondycję, aby pokazać najlepsze opcje treningowe.';
       case 'dieta':
         return 'Smart Meal Planner AI uwzględnił Twoje preferencje żywieniowe i cele kaloryczne.';
-      case 'imprezy':
-        return 'Weekend Activity Optimizer AI dobrał imprezy idealne dla Twojego typu osobowości i poziomu energii.';
       default:
         return 'Travel Route Planner AI zaplanował opcje wakacyjne dopasowane do Twojego budżetu i stylu podróżowania.';
     }
