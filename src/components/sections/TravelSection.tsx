@@ -107,11 +107,10 @@ const TravelSection: React.FC<TravelSectionProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setViewMode('wizard')}
-            className="cursor-pointer hover:shadow-lg transition"
+            onClick={() => setViewMode('edit-profile')}
           >
             <Settings className="h-4 w-4" />{' '}
-            {hasProfile ? ' Edytuj profil' : ' Utwórz profil'}
+            {hasProfile ? ' Edytuj profil' : 'Utwórz profil'}
           </Button>
           {hasProfile && (
             <Button

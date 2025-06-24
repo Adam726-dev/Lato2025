@@ -1,42 +1,45 @@
-import React from 'react';
+// src/components/sections/DietSection.tsx
+
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUserProfile } from '@/context/UserProfileContext';
+import { usePlan, PlanChoices } from '@/context/PlanContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Utensils, ChevronRight } from 'lucide-react';
+import { Utensils, ChevronRight, X } from 'lucide-react';
 
-interface DietSectionProps {
-  sectionId: string;
-  section: {
-    options: Array<{
-      id: number;
-      icon?: string;
-      name: string;
-      description: string;
-      features?: string[];
-      price?: string;
-    }>;
-  };
-  choices: Record<string, number>;
-  updateChoice: (sectionId: string, optionId: string) => void;
+interface Option {
+  id: number;
+  icon?: React.ReactNode;
+  name: string;
+  description: string;
+  features?: string[];
+  price?: string;
 }
 
-const DietSection: React.FC<DietSectionProps> = ({
-  sectionId,
-  section,
-  choices,
-  updateChoice,
-}) => {
-  const { profile } = useUserProfile();
+interface DietSectionProps {
+  sectionId: keyof PlanChoices;
+  section: { options: Option[] };
+}
 
-  // Profil dietetyczny uznajemy za kompletny jeśli mamy kcal i liczbę posiłków
+const DietSection: React.FC<DietSectionProps> = ({ sectionId, section }) => {
+  const { profile } = useUserProfile();
+  const { choices, updateChoice, removeChoice } = usePlan();
+
+  // uznajemy profil za kompletny, jeśli profile.dailyCalories i profile.mealsPerDay są ustawione
   const hasNutritionProfile = !!profile.dailyCalories && !!profile.mealsPerDay;
+
+  // który option jest teraz otwarty w modal?
+  const [modalOption, setModalOption] = useState<Option | null>(null);
+
+  // helper: sprawdza czy dany opt.id jest aktualnie w choices[sectionId]
+  const isSelected = (opt: Option) => choices[sectionId] === opt.id;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12 space-y-12">
       {hasNutritionProfile ? (
         <>
-          {/* ————————————————————————————————————— AI-panel ————————————————————————————————————— */}
+          {/* ——— Pasek “Twój Profil Dietetyczny” ——— */}
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Twój Profil Dietetyczny</h2>
             <Link to="/dieta/wizard">
@@ -44,6 +47,7 @@ const DietSection: React.FC<DietSectionProps> = ({
             </Link>
           </div>
 
+          {/* ——— Podgląd planu AI ——— */}
           <Card className="mb-8 hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -101,7 +105,7 @@ const DietSection: React.FC<DietSectionProps> = ({
         </>
       ) : (
         <>
-          {/* ————————————————————————————————————— Przycisk otwarcia kreatora ————————————————————————————————————— */}
+          {/* ——— Przycisk otwarcia kreatora ——— */}
           <div className="text-center mb-8">
             <Link to="/dieta/wizard">
               <Button className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-3 text-lg">
@@ -113,59 +117,114 @@ const DietSection: React.FC<DietSectionProps> = ({
         </>
       )}
 
-      {/* ————————————————————————————————————— Grid kafelków ————————————————————————————————————— */}
+      {/* ——— Grid kafelków z cateringiem ——— */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {section.options.map((opt) => {
-          const isSelected = choices[sectionId] === opt.id;
-          return (
-            <div
-              key={opt.id}
-              className={`relative bg-white rounded-lg shadow-md cursor-pointer transition-transform hover:scale-105 border-2 ${
-                isSelected
-                  ? 'border-green-500 bg-green-50'
-                  : 'border-gray-200 hover:border-green-300'
-              }`}
-              onClick={() => updateChoice(sectionId, String(opt.id))}
-            >
-              <div className="p-6 text-center">
-                {opt.icon && (
-                  <div className="text-4xl mb-4">{opt.icon}</div>
-                )}
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {opt.name}
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  {opt.description}
-                </p>
-                {opt.features && (
-                  <ul className="text-sm text-gray-500 space-y-1 mb-4">
-                    {opt.features.map((f, i) => (
-                      <li
-                        key={i}
-                        className="flex items-center justify-center"
-                      >
-                        <span className="text-green-500 mr-2">✓</span>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {opt.price && (
-                  <div className="text-lg font-bold text-green-600 mb-2">
-                    {opt.price}
-                  </div>
-                )}
-                <div className="flex items-center justify-center text-green-600">
-                  <span className="text-sm font-medium">
-                    {isSelected ? 'Wybrane' : 'Wybierz'}
-                  </span>
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                </div>
+        {section.options.map((opt) => (
+          <div
+            key={opt.id}
+            className={`
+              relative bg-white rounded-lg shadow-md cursor-pointer
+              transition-transform hover:scale-105 border-2
+              ${isSelected(opt)
+                ? 'border-green-500 bg-green-50'
+                : 'border-gray-200 hover:border-green-300'}
+            `}
+            onClick={() => setModalOption(opt)}
+          >
+            <div className="p-6 text-center">
+              {opt.icon && <div className="text-4xl mb-4">{opt.icon}</div>}
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{opt.name}</h3>
+              <p className="text-gray-600 text-sm mb-4">{opt.description}</p>
+              {opt.features && (
+                <ul className="text-sm text-gray-500 space-y-1 mb-4">
+                  {opt.features.map((f, i) => (
+                    <li key={i} className="flex items-center justify-center">
+                      <span className="text-green-500 mr-2">✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {opt.price && (
+                <div className="text-lg font-bold text-green-600 mb-2">{opt.price}</div>
+              )}
+              <div className="flex items-center justify-center text-green-600">
+                <span className="text-sm font-medium">
+                  {isSelected(opt) ? 'Wybrane' : 'Wybierz'}
+                </span>
+                <ChevronRight className="h-4 w-4 ml-1" />
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
+
+      {/* ——— Modal z detalami i akcjami ——— */}
+      {modalOption && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden relative">
+            <button
+              onClick={() => setModalOption(null)}
+              className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <div className="p-6 space-y-4">
+              {/* Nagłówek */}
+              <div className="text-center space-y-2">
+                {modalOption.icon && <div className="text-5xl">{modalOption.icon}</div>}
+                <h2 className="text-3xl font-bold">{modalOption.name}</h2>
+                <p className="text-gray-600">{modalOption.description}</p>
+              </div>
+
+              {/* Cechy */}
+              {modalOption.features && (
+                <ul className="space-y-2 text-left">
+                  {modalOption.features.map((f, i) => (
+                    <li key={i} className="flex items-center gap-2 text-gray-700">
+                      <span className="text-green-500">✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Cena */}
+              {modalOption.price && (
+                <div className="text-2xl font-bold text-green-600 text-center">
+                  {modalOption.price}
+                </div>
+              )}
+
+              {/* Akcje */}
+              <div className="flex gap-4">
+                <Button
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                  onClick={() => {
+                    updateChoice(sectionId, modalOption.id);
+                    setModalOption(null);
+                  }}
+                >
+                  Wybierz
+                </Button>
+
+                {isSelected(modalOption) && (
+                  <Button
+                    variant="destructive"
+                    className="flex-1"
+                    onClick={() => {
+                      removeChoice(sectionId);
+                      setModalOption(null);
+                    }}
+                  >
+                    Anuluj
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
