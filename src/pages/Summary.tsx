@@ -189,7 +189,7 @@ const Summary: React.FC = () => {
         {/* Całkowity koszt */}
         <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg p-6 text-center">
           <h3 className="text-2xl font-bold mb-2">Szacunkowy koszt planu</h3>
-          <div className="text-4xl font-bold">{totalCost} </div>
+          <div className="text-4xl font-bold">{totalCost} zł</div>
           <p className="mt-2 text-white/90">
             {selectedSections.length} {selectedSections.length === 1 ? 'aktywn.' : 'aktywn.'}
           </p>

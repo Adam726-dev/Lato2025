@@ -43,7 +43,7 @@ interface TravelSectionProps {
   section: { options: TravelOption[] }
 }
 
-type ViewMode = 'options' | 'wizard' | 'ai-planner' | 'edit-profile'
+type ViewMode = 'options' | 'wizard' | 'ai-planner'
 
 const TravelSection: React.FC<TravelSectionProps> = ({
   sectionId,
@@ -107,7 +107,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setViewMode('edit-profile')}
+            onClick={() => setViewMode('wizard')}
           >
             <Settings className="h-4 w-4" />{' '}
             {hasProfile ? 'Edytuj profil' : 'Utwórz profil'}
@@ -180,46 +180,54 @@ const TravelSection: React.FC<TravelSectionProps> = ({
   const renderReadyTrips = () => (
     <div>
       <h3 className="text-xl font-semibold mb-4">Gotowe Wycieczki</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      {/* 1. overflow-visible na grid + większy gap */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 overflow-visible">
         {section.options.map((opt) => {
-          const isSel = choices[sectionId] === opt.id
+          const isSel = choices[sectionId] === opt.id;
           return (
+            // 2. każdego kafelka obudowujemy w wrapper z relative + overflow-visible
             <div
               key={opt.id}
               onClick={() => setExpanded(opt)}
-              className={`
-                relative ${isSel ? 'z-20' : 'z-10'} hover:z-30
-                ${optionCardBase} +
-                ''
-                ${isSel
-                  ? 'border-2 border-yellow-500 bg-blue-50 transform scale-105'
-                  : 'hover:border-yellow-300'}
-              `}
+              className="relative overflow-visible"
             >
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl mb-2">{opt.image}</div>
-                <h4 className="text-2xl font-semibold mb-1">{opt.name}</h4>
-                <p className="text-gray-600 mb-3">{opt.description}</p>
-                <div className="text-xl font-bold text-yellow-600 mb-2">
-                  {opt.price}
-                </div>
-                <div
-                  className={`text-sm font-medium flex items-center justify-center gap-1 
-                    ${isSel 
-                      ? 'text-yellow-700' 
-                      : 'text-yellow-600'
-                  }`}
-                >
-                  {isSel ? 'Wybrane' : 'Szczegóły'}{' '}
-                  <ChevronRight className="h-4 w-4" />
-                </div>
-              </CardContent>
+              <div
+                className={`
+                  ${optionCardBase}
+                  transform transition-all duration-200
+                  ${isSel
+                    ? 'scale-105 z-20'
+                    : 'z-10 hover:scale-105 hover:z-20'}
+                  border-2
+                  ${isSel
+                    ? 'border-yellow-500 bg-blue-50'
+                    : 'border-gray-200 hover:border-yellow-300'}
+                `}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="text-4xl mb-2">{opt.image}</div>
+                  <h4 className="text-2xl font-semibold mb-1">{opt.name}</h4>
+                  <p className="text-gray-600 mb-3">{opt.description}</p>
+                  <div className="text-xl font-bold text-yellow-600 mb-2">
+                    {opt.price}
+                  </div>
+                  <div
+                    className={`
+                      text-sm font-medium flex items-center justify-center gap-1 
+                      ${isSel ? 'text-yellow-700' : 'text-yellow-600'}
+                    `}
+                  >
+                    {isSel ? 'Wybrane' : 'Szczegóły'} <ChevronRight className="h-4 w-4" />
+                  </div>
+                </CardContent>
+              </div>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 
   const renderExpanded = () =>
     expanded && (
@@ -299,19 +307,6 @@ const TravelSection: React.FC<TravelSectionProps> = ({
               ← Powróć
             </Button>
             <TravelPlanGenerator />
-          </>
-        )
-      case 'edit-profile':
-        return (
-          <>
-            <Button
-              variant="outline"
-              className="mb-6"
-              onClick={() => setViewMode('options')}
-            >
-              ← Powróć
-            </Button>
-            {/* tu Twój komponent edycji profilu */}
           </>
         )
       default:

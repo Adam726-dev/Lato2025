@@ -78,7 +78,7 @@ const WizardLayout: React.FC<WizardLayoutProps> = ({
             </>
           ) : (
             <>
-              {isLastStep ? 'Generuj plan' : 'Następny'}
+              {isLastStep ? 'Zapisz profil' : 'Następny'}
               {!isLastStep && <span>→</span>}
             </>
           )}

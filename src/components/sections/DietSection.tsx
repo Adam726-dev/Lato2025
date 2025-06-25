@@ -126,7 +126,7 @@ const DietSection: React.FC<DietSectionProps> = ({ sectionId, section }) => {
               relative bg-white rounded-lg shadow-md cursor-pointer
               transition-transform hover:scale-105 border-2
               ${isSelected(opt)
-                ? 'border-green-500 bg-green-50'
+                ? 'border-green-500 bg-green-50 scale-105'
                 : 'border-gray-200 hover:border-green-300'}
             `}
             onClick={() => setModalOption(opt)}

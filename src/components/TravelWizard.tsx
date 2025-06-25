@@ -203,7 +203,11 @@ const TravelWizard: React.FC<TravelWizardProps> = ({ onComplete }) => {
               ].map((style) => (
                 <div
                   key={style.value}
-                  className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-gray-50"
+                  className={`flex items-start space-x-3 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer ${formData.travelStyle === style.value ? 'ring-2 ring-blue-400' : ''}`}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setFormData({ ...formData, travelStyle: style.value })}
+                  onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setFormData({ ...formData, travelStyle: style.value }) }}
                 >
                   <RadioGroupItem
                     value={style.value}
@@ -261,7 +265,11 @@ const TravelWizard: React.FC<TravelWizardProps> = ({ onComplete }) => {
                 ].map((acc) => (
                   <div
                     key={acc.value}
-                    className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50"
+                    className={`flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer ${formData.accommodationPreference === acc.value ? 'ring-2 ring-blue-400' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setFormData({ ...formData, accommodationPreference: acc.value })}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setFormData({ ...formData, accommodationPreference: acc.value }) }}
                   >
                     <RadioGroupItem value={acc.value} id={acc.value} />
                     <Label htmlFor={acc.value} className="font-medium flex-1">
@@ -309,16 +317,14 @@ const TravelWizard: React.FC<TravelWizardProps> = ({ onComplete }) => {
                 ].map((transport) => (
                   <div
                     key={transport.value}
-                    className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50"
+                    className={`flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer ${formData.transportPreference === transport.value ? 'ring-2 ring-blue-400' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setFormData({ ...formData, transportPreference: transport.value })}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setFormData({ ...formData, transportPreference: transport.value }) }}
                   >
-                    <RadioGroupItem
-                      value={transport.value}
-                      id={transport.value}
-                    />
-                    <Label
-                      htmlFor={transport.value}
-                      className="font-medium flex-1"
-                    >
+                    <RadioGroupItem value={transport.value} id={transport.value} />
+                    <Label htmlFor={transport.value} className="font-medium flex-1">
                       {transport.label}
                     </Label>
                     <span className="text-sm text-gray-600">
@@ -354,15 +360,15 @@ const TravelWizard: React.FC<TravelWizardProps> = ({ onComplete }) => {
                 ].map((dest) => (
                   <div
                     key={dest.value}
-                    className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50"
+                    className={`flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer ${formData.destinationPreferences.includes(dest.value) ? 'ring-2 ring-blue-400' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => handleDestinationChange(dest.value)}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') handleDestinationChange(dest.value) }}
                   >
                     <Checkbox
-                      checked={formData.destinationPreferences.includes(
-                        dest.value
-                      )}
-                      onCheckedChange={() =>
-                        handleDestinationChange(dest.value)
-                      }
+                      checked={formData.destinationPreferences.includes(dest.value)}
+                      onCheckedChange={() => handleDestinationChange(dest.value)}
                       id={dest.value}
                     />
                     <Label htmlFor={dest.value} className="font-medium">
@@ -372,7 +378,6 @@ const TravelWizard: React.FC<TravelWizardProps> = ({ onComplete }) => {
                 ))}
               </div>
             </div>
-
             <div>
               <div className="text-center mb-6">
                 <div className="text-4xl mb-2">👥</div>
@@ -409,7 +414,11 @@ const TravelWizard: React.FC<TravelWizardProps> = ({ onComplete }) => {
                 ].map((comp) => (
                   <div
                     key={comp.value}
-                    className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50"
+                    className={`flex items-start space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer ${formData.travelCompanions === comp.value ? 'ring-2 ring-blue-400' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setFormData({ ...formData, travelCompanions: comp.value })}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setFormData({ ...formData, travelCompanions: comp.value }) }}
                   >
                     <RadioGroupItem
                       value={comp.value}
