@@ -21,6 +21,13 @@ const Index = () => {
   
   const hasAnyChoices = Object.keys(choices).length > 0;
 
+  // Zamiana kolejności: Siłownia przed Dietą
+  const orderedSections = [
+    ...sectionsData.filter(section => section.id === 'silownia'),
+    ...sectionsData.filter(section => section.id === 'dieta'),
+    ...sectionsData.filter(section => section.id !== 'dieta' && section.id !== 'silownia' && section.id !== 'imprezy'),
+  ];
+
   if (!isLoggedIn && !showLoginForm) {
     return <LandingPage onGetStarted={() => setShowLoginForm(true)} />;
   }
@@ -40,7 +47,7 @@ const Index = () => {
             Twój Plan na <span className="text-summer-blue">Lato</span> ☀️
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Stwórz idealny plan na najbardziej gorące miesiące roku. Wybierz dietę, siłownię i wakacje dopasowane do Twoich potrzeb!
+            Stwórz idealny plan na najbardziej gorące miesiące roku. Wybierz siłownię, dietę i wakacje dopasowane do Twoich potrzeb!
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -68,7 +75,7 @@ const Index = () => {
 
         {/* Sections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 w-full">
-          {sectionsData.filter(section => section.id !== 'imprezy').map(section => {
+          {orderedSections.map(section => {
             // wyciągamy surową wartość z choices
             const raw = choices[section.id as keyof typeof choices];
             
@@ -125,16 +132,17 @@ const Index = () => {
             Rozpocznij swój plan już dziś i ciesz się każdą chwilą lata!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/dieta">
-              <button className="bg-white text-summer-blue hover:bg-gray-100 px-8 py-3 rounded-md font-medium transition-colors">
-                🥗 Zacznij od diety
-              </button>
-            </Link>
             <Link to="/silownia">
-              <button className="border border-white text-white hover:bg-white hover:text-summer-blue px-8 py-3 rounded-md font-medium transition-colors">
-                🏋️‍♀️ Wybierz siłownię
+              <button className="bg-white text-summer-blue hover:bg-gray-100 px-8 py-3 rounded-md font-medium transition-colors">
+                🏋️‍♀️ Zacznij od siłowni
               </button>
             </Link>
+            <Link to="/dieta">
+              <button className="border border-white text-white hover:bg-white hover:text-summer-blue px-8 py-3 rounded-md font-medium transition-colors">
+                🥗 Wybierz dietę
+              </button>
+            </Link>
+            
           </div>
         </div>
       </main>
