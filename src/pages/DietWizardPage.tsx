@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
@@ -68,11 +67,24 @@ const DietWizardPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
-      <Navigation />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {renderCurrentStep()}
-      </main>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Tło wideo diet.mp4 */}
+      <video
+        className="fixed inset-0 w-full h-full object-cover z-0 blur-sm brightness-75"
+        src="/videos/diet.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{ pointerEvents: 'none', objectFit: 'cover', minHeight: '100%', minWidth: '100%' }}
+      />
+      <div className="fixed inset-0 bg-black bg-opacity-40 z-10 pointer-events-none" />
+      <div className="relative z-20">
+        <Navigation />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {renderCurrentStep()}
+        </main>
+      </div>
     </div>
   );
 };

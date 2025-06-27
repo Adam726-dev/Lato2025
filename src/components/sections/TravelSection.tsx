@@ -41,6 +41,8 @@ interface TravelOption {
 interface TravelSectionProps {
   sectionId: keyof PlanChoices
   section: { options: TravelOption[] }
+  viewMode?: ViewMode
+  setViewMode?: React.Dispatch<React.SetStateAction<ViewMode>>
 }
 
 type ViewMode = 'options' | 'wizard' | 'ai-planner'
@@ -48,10 +50,15 @@ type ViewMode = 'options' | 'wizard' | 'ai-planner'
 const TravelSection: React.FC<TravelSectionProps> = ({
   sectionId,
   section,
+  viewMode: controlledViewMode,
+  setViewMode: controlledSetViewMode,
 }) => {
   const { profile } = useUserProfile()
   const { choices, updateChoice, removeChoice } = usePlan()
-  const [viewMode, setViewMode] = useState<ViewMode>('options')
+  // Jeśli przekazano viewMode/setViewMode z góry, używaj ich, inaczej lokalny state
+  const [localViewMode, localSetViewMode] = useState<ViewMode>('options')
+  const viewMode = controlledViewMode ?? localViewMode
+  const setViewMode = controlledSetViewMode ?? localSetViewMode
 
   // który kafelek jest rozwinięty w modal
   const [expanded, setExpanded] = useState<TravelOption | null>(null)
@@ -179,7 +186,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
 
   const renderReadyTrips = () => (
     <div>
-      <h3 className="text-xl font-semibold mb-4">Gotowe Wycieczki</h3>
+      <h3 className="text-xl font-semibold mb-4 mt-12 text-white drop-shadow-lg">Gotowe Wycieczki</h3>
 
       {/* 1. overflow-visible na grid + większy gap */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 overflow-visible">
@@ -197,9 +204,9 @@ const TravelSection: React.FC<TravelSectionProps> = ({
                   ${optionCardBase}
                   transform transition-all duration-200
                   ${isSel
-                    ? 'scale-105 z-20'
-                    : 'z-10 hover:scale-105 hover:z-20'}
-                  border-2
+                    ? 'scale-105 z-20 border-4'
+                    : 'z-10 hover:scale-105 hover:z-20 border-2'}
+                  
                   ${isSel
                     ? 'border-yellow-500 bg-blue-50'
                     : 'border-gray-200 hover:border-yellow-300'}
@@ -282,6 +289,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
     )
 
   const renderContent = () => {
+    // Usunięcie tła wideo z TravelSection, bo jest już w SectionPage
     switch (viewMode) {
       case 'wizard':
         return (
@@ -320,7 +328,8 @@ const TravelSection: React.FC<TravelSectionProps> = ({
     }
   }
 
-  return <div className="space-y-6">{renderContent()}</div>
+  // Usunięcie wrappera z tłem wideo!
+  return <>{renderContent()}</>
 }
 
 export default TravelSection

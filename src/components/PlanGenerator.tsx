@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useUserProfile } from '@/context/UserProfileContext';
 import { generateWorkoutPlan } from '@/services/geminiService';
@@ -88,8 +87,8 @@ const PlanGenerator: React.FC = () => {
             <CardTitle className="text-center">💪 Generator Planu Treningowego</CardTitle>
           </CardHeader>
           <CardContent>
-            <FormGroup>
-              <Label>Preferowane obszary do skupienia</Label>
+            <FormGroup className="mb-8">
+              <Label className="text-lg font-bold text-black mb-2">Preferowane obszary do skupienia</Label>
               <FormRow>
                 <label className="flex items-center space-x-2">
                   <Checkbox
@@ -136,8 +135,8 @@ const PlanGenerator: React.FC = () => {
               </FormRow>
             </FormGroup>
 
-            <FormGroup>
-              <Label>Dostępny sprzęt</Label>
+            <FormGroup className="mb-8">
+              <Label className="text-lg font-bold text-black mb-2">Dostępny sprzęt</Label>
               <FormRow>
                 <label className="flex items-center space-x-2">
                   <Checkbox

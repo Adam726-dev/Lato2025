@@ -27,7 +27,7 @@ const WorkoutProgressSection: React.FC = () => {
 
   return (
     <div>
-      <label htmlFor="exercise-select" className="block mb-2">Wybierz ćwiczenie:</label>
+      <label htmlFor="exercise-select" className="block mb-2 text-white drop-shadow-lg font-semibold text-xl">Wybierz ćwiczenie:</label>
       <select
         id="exercise-select"
         value={selectedId}

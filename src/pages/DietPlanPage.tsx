@@ -229,132 +229,150 @@ const DietPlanPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
-      <Navigation />
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <Button variant="outline" onClick={handleBack} className="mb-4">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Wróć do sekcji diety
-          </Button>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Tło wideo diet.mp4 */}
+      <video
+        className="fixed inset-0 w-full h-full object-cover z-0 blur-sm brightness-75"
+        src="/videos/diet.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          pointerEvents: "none",
+          objectFit: "cover",
+          minHeight: "100%",
+          minWidth: "100%",
+        }}
+      />
+      <div className="fixed inset-0 bg-black bg-opacity-40 z-10 pointer-events-none" />
+      <div className="relative z-20">
+        <Navigation />
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-6">
+            <Button variant="outline" onClick={handleBack} className="mb-4">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Wróć do sekcji diety
+            </Button>
 
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              🍽️ Twój Plan Żywieniowy
-            </h1>
-            <p className="text-xl text-gray-600">
-              Plan dopasowany do Twoich potrzeb
-            </p>
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-white drop-shadow-lg mb-4">
+                🍽️ Twój Plan Żywieniowy
+              </h1>
+              <p className="text-xl text-white drop-shadow">
+                Plan dopasowany do Twoich potrzeb
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div className="grid gap-6 mb-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-green-600" />
-                Podsumowanie Planu
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">
-                    {mockPlan.dailyCalories}
+          <div className="grid gap-6 mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="h-5 w-5 text-green-600" />
+                  Podsumowanie Planu
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">
+                      {mockPlan.dailyCalories}
+                    </div>
+                    <div className="text-sm text-gray-600">kcal dziennie</div>
                   </div>
-                  <div className="text-sm text-gray-600">kcal dziennie</div>
-                </div>
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">
-                    {mockPlan.mealsPerDay}
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {mockPlan.mealsPerDay}
+                    </div>
+                    <div className="text-sm text-gray-600">posiłki dziennie</div>
                   </div>
-                  <div className="text-sm text-gray-600">posiłki dziennie</div>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">7</div>
-                  <div className="text-sm text-gray-600">dni planu</div>
-                </div>
-                <div className="text-center p-4 bg-orange-50 rounded-lg">
-                  <div className="text-2xl font-bold text-orange-600">
-                    {mockPlan.weeklyGoal}
+                  <div className="text-center p-4 bg-purple-50 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">7</div>
+                    <div className="text-sm text-gray-600">dni planu</div>
                   </div>
-                  <div className="text-sm text-gray-600">cel tygodniowy</div>
+                  <div className="text-center p-4 bg-orange-50 rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600">
+                      {mockPlan.weeklyGoal}
+                    </div>
+                    <div className="text-sm text-gray-600">cel tygodniowy</div>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          {Object.entries(mockPlan.weeklyMeals).map(
-            ([day, meals]: [string, any]) => (
-              <Card key={day}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-blue-600" />
-                    {day}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-4">
-                    {meals.map((meal: any, index: number) => (
-                      <div
-                        key={index}
-                        className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <ChefHat className="h-4 w-4 text-gray-600" />
-                          <span className="font-medium">{meal.name}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Clock className="h-4 w-4" />
-                          <span>{meal.time}</span>
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          {meal.calories} kcal
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-gray-700">
-                            {meal.description}
-                          </p>
-                          {meal.ingredients && (
-                            <p className="text-xs text-gray-500 mt-1">
-                              Składniki: {meal.ingredients.join(", ")}
+            {Object.entries(mockPlan.weeklyMeals).map(
+              ([day, meals]: [string, any]) => (
+                <Card key={day}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5 text-blue-600" />
+                      {day}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4">
+                      {meals.map((meal: any, index: number) => (
+                        <div
+                          key={index}
+                          className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <ChefHat className="h-4 w-4 text-gray-600" />
+                            <span className="font-medium">{meal.name}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <Clock className="h-4 w-4" />
+                            <span>{meal.time}</span>
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {meal.calories} kcal
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-700">
+                              {meal.description}
                             </p>
-                          )}
+                            {meal.ingredients && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                Składniki: {meal.ingredients.join(", ")}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          )}
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            )}
 
-          <Card>
-            <CardHeader>
-              <CardTitle>💡 Rekomendacje</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                {mockPlan.recommendations.map((rec: string, index: number) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="text-green-500 mt-1">✓</span>
-                    <span className="text-gray-700">{rec}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>💡 Rekomendacje</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {mockPlan.recommendations.map((rec: string, index: number) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-gray-700">{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
 
-        <div className="flex gap-4 justify-center">
-          <Button variant="outline" onClick={() => navigate("/dieta/catering")}>
-            Znajdź catering
-          </Button>
-          <Button onClick={() => navigate("/dieta/wizard")}>
-            Stwórz nowy plan
-          </Button>
-        </div>
-      </main>
+          <div className="flex gap-4 justify-center">
+            <Button variant="outline" onClick={() => navigate("/dieta/catering")}>
+              Znajdź catering
+            </Button>
+            <Button onClick={() => navigate("/dieta/wizard")}>
+              Stwórz nowy plan
+            </Button>
+          </div>
+        </main>
+      </div>
     </div>
   );
 };

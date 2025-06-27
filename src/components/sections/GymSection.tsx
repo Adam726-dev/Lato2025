@@ -46,6 +46,14 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
     setWorkoutPlans(getWorkoutPlans());
   }, []);
 
+  useEffect(() => {
+    // Ustaw prędkość odtwarzania wideo po zamontowaniu
+    const video = document.querySelector<HTMLVideoElement>('video');
+    if (video) {
+      video.playbackRate = 0.7;
+    }
+  }, []);
+
   const handleStartWorkout = (plan: WorkoutPlan, dayId: string) => {
     setSelectedPlan(plan);
     setSelectedDayId(dayId);
@@ -76,202 +84,217 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
   }
 
   return (
-    <div className="space-y-12">
-      {/* —————————————————————————————————————————————
-           Pasek “Twój Plan Treningowy AI” (zawsze widoczny)
-      ————————————————————————————————————————————— */}
-      <div className="max-w-4xl mx-auto flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Twój Plan Treningowy AI</h2>
-        <div className="flex gap-3">
-          <Button
-            variant="outline"
-            onClick={() => setShowProgress(prev => !prev)}
-            className="flex items-center gap-2"
-          >
-            <User className="h-4 w-4" /> Postępy
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleEditProfile}
-            className="flex items-center gap-2"
-          >
-            <User className="h-4 w-4" /> Edytuj profil
-          </Button>
-          <Link to="/generator-planu">
-            <Button variant="outline" className="flex items-center gap-2">
-              <RefreshCw className="h-4 w-4" /> Wygeneruj nowy plan
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* —————————————————————————————————————————————
-           Profil fitness (tylko gdy skonfigurowany)
-      ————————————————————————————————————————————— */}
-      {isProfileComplete('fitness') && (
-        <Card className="max-w-4xl mx-auto bg-blue-50 border-blue-200 mb-6">
-          <CardContent className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <User className="h-5 w-5 text-blue-600" />
-              <div>
-                <h4 className="font-medium text-blue-900">Profil Fitness</h4>
-                <p className="text-sm text-blue-700">
-                  {profile.gender === 'male' ? 'Mężczyzna' : 'Kobieta'},{' '}
-                  {profile.age} lat, {profile.currentWeight}kg → {profile.targetWeight}kg, 
-                  poziom: {profile.fitnessLevel}
-                </p>
-              </div>
-            </div>
+    <div className="relative w-full min-h-screen overflow-hidden">
+      {/* Tło wideo */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        src="/videos/gym.mp4"
+        className="absolute inset-0 w-full h-full object-cover z-0 brightness-60 blur-sm"
+        style={{ filter: 'brightness(40%) blur(6px)', WebkitFilter: 'brightness(40%) blur(6px)' }}
+      />
+      {/* Overlay na tło */}
+      <div className="relative z-10 space-y-12">
+        {/* —————————————————————————————————————————————
+             Pasek “Twój Plan Treningowy AI” (zawsze widoczny)
+        ————————————————————————————————————————————— */}
+        <div className="max-w-4xl mx-auto flex justify-between items-center mt-12">
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">Twój Plan Treningowy AI</h2>
+          <div className="flex gap-3">
             <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleEditProfile}
-              className="text-blue-600"
+              variant="outline"
+              onClick={() => setShowProgress(prev => !prev)}
+              className="flex items-center gap-2"
             >
-              <Settings className="h-4 w-4" />
+              <User className="h-4 w-4" /> Postępy
             </Button>
-          </CardContent>
-        </Card>
-      )}
+            <Button
+              variant="outline"
+              onClick={handleEditProfile}
+              className="flex items-center gap-2"
+            >
+              <User className="h-4 w-4" /> Edytuj profil
+            </Button>
+            <Link to="/generator-planu">
+              <Button variant="outline" className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4" /> Wygeneruj nowy plan
+              </Button>
+            </Link>
+          </div>
+        </div>
 
-      {/* —————————————————————————————————————————————
-           Gotowy plan AI (dni treningowe)
-      ————————————————————————————————————————————— */}
-      {workoutPlans.length > 0 && (
-        <Card className="max-w-4xl mx-auto hover:shadow-lg transition-shadow mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Dumbbell className="h-5 w-5 text-blue-600" />
-              {workoutPlans[0].name}
-            </CardTitle>
-            <p className="text-gray-600">{workoutPlans[0].description}</p>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <Calendar className="h-4 w-4" /> Utworzony:{' '}
-              {new Date(workoutPlans[0].createdAt).toLocaleDateString('pl-PL')}
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3 p-6">
-            {workoutPlans[0].workoutDays.map((day) => (
-              <div
-                key={day.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-              >
+        {/* —————————————————————————————————————————————
+             Profil fitness (tylko gdy skonfigurowany)
+        ————————————————————————————————————————————— */}
+        {isProfileComplete('fitness') && (
+          <Card className="max-w-4xl mx-auto bg-blue-50 border-blue-200 mb-6">
+            <CardContent className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <User className="h-5 w-5 text-blue-600" />
                 <div>
-                  <h5 className="font-medium text-gray-900">{day.name}</h5>
-                  <p className="text-sm text-gray-600">
-                    {day.exercises.length} ćwiczeń
+                  <h4 className="font-medium text-blue-900 mt-2">Profil Fitness</h4>
+                  <p className="text-sm text-blue-700">
+                    {profile.gender === 'male' ? 'Mężczyzna' : 'Kobieta'},{' '}
+                    {profile.age} lat, {profile.currentWeight}kg → {profile.targetWeight}kg, 
+                    poziom: {profile.fitnessLevel}
                   </p>
                 </div>
-                <Button
-                  size="sm"
-                  className="flex items-center gap-2"
-                  onClick={() => handleStartWorkout(workoutPlans[0], day.id)}
-                >
-                  <Play className="h-4 w-4" /> Rozpocznij
-                </Button>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
-
-      {showProgress && <WorkoutProgressSection />}
-
-      {/*Siatka kafelków*/}
-      <div className="max-w-6xl mx-auto space-y-6">
-        <h3 className="text-2xl font-bold">Wybierz Siłownię</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {section.options.map((option) => {
-            const isSelected = choices[sectionId] === option.id;
-            return (
-              <div
-                key={option.id}
-                onClick={() => setModalOption(option)}
-                className={`
-                  ${optionCardBase} +
-                  'p-6'
-                  ${isSelected
-                    ? 'border-2 border-red-600 bg-red-50 transform scale-105'
-                    : 'hover:border-red-300'}
-                `}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleEditProfile}
+                className="text-blue-600"
               >
-                <div className="p-6 text-center">
-                  <div className="text-4xl mb-2">{option.icon}</div>
-                  <h4 className="text-2xl font-semibold mb-1">{option.name}</h4>
-                  <p className="text-gray-600 text-sm mb-3">{option.description}</p>
-                  <div className="text-lg font-bold text-red-600 mb-2">
-                    {option.price}
+                <Settings className="h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* —————————————————————————————————————————————
+             Gotowy plan AI (dni treningowe)
+        ————————————————————————————————————————————— */}
+        {workoutPlans.length > 0 && (
+          <Card className="max-w-4xl mx-auto hover:shadow-lg transition-shadow mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Dumbbell className="h-5 w-5 text-blue-600" />
+                {workoutPlans[0].name}
+              </CardTitle>
+              <p className="text-gray-600">{workoutPlans[0].description}</p>
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <Calendar className="h-4 w-4" /> Utworzony:{' '}
+                {new Date(workoutPlans[0].createdAt).toLocaleDateString('pl-PL')}
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3 p-6">
+              {workoutPlans[0].workoutDays.map((day) => (
+                <div
+                  key={day.id}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div>
+                    <h5 className="font-medium text-gray-900">{day.name}</h5>
+                    <p className="text-sm text-gray-600">
+                      {day.exercises.length} ćwiczeń
+                    </p>
                   </div>
-                  <div className="flex items-center justify-center text-red-700 mt-2">
-                    <span className="text-sm font-medium">
-                      {isSelected ? 'Wybrane' : 'Szczegóły'}
-                    </span>
-                    <ChevronRight className="h-4 w-4 ml-1" />
+                  <Button
+                    size="sm"
+                    className="flex items-center gap-2"
+                    onClick={() => handleStartWorkout(workoutPlans[0], day.id)}
+                  >
+                    <Play className="h-4 w-4" /> Rozpocznij
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {showProgress && <WorkoutProgressSection />}
+
+        {/*Siatka kafelków*/}
+        <div className="max-w-6xl mx-auto space-y-6">
+          <h3 className="text-2xl font-bold text-white drop-shadow-lg">Wybierz Siłownię</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {section.options.map((option) => {
+              const isSelected = choices[sectionId] === option.id;
+              return (
+                <div
+                  key={option.id}
+                  onClick={() => setModalOption(option)}
+                  className={`
+                    ${optionCardBase} +
+                    'p-6'
+                    ${isSelected
+                      ? 'border-4 border-red-400 bg-red-50 transform scale-105'
+                      : 'hover:border-red-300 border-2'}
+                  `}
+                >
+                  <div className="p-6 text-center">
+                    <div className="text-4xl mb-2">{option.icon}</div>
+                    <h4 className="text-2xl font-semibold mb-1">{option.name}</h4>
+                    <p className="text-gray-600 text-sm mb-3">{option.description}</p>
+                    <div className="text-lg font-bold text-red-600 mb-2">
+                      {option.price}
+                    </div>
+                    <div className="flex items-center justify-center text-red-700 mt-2">
+                      <span className="text-sm font-medium">
+                        {isSelected ? 'Wybrane' : 'Szczegóły'}
+                      </span>
+                      <ChevronRight className="h-4 w-4 ml-1" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* —————————————————————————————————————————————
-           Modal z detalami i przyciskami Wybierz/Anuluj
-      ————————————————————————————————————————————— */}
-      {modalOption && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 relative">
-            <button
-              onClick={() => setModalOption(null)}
-              className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
-            >
-              <X className="h-6 w-6" />
-            </button>
-            <div className="p-6 space-y-4">
-              <div className="text-center space-y-2">
-                <div className="text-5xl">{modalOption.icon}</div>
-                <h4 className="text-2xl font-bold">{modalOption.name}</h4>
-                <p className="text-gray-600">{modalOption.description}</p>
-              </div>
-              <ul className="space-y-2">
-                {modalOption.features.map((feat: string, i: number) => (
-                  <li key={i} className="flex items-center text-gray-700">
-                    <span className="text-green-500 mr-2">✓</span>
-                    {feat}
-                  </li>
-                ))}
-              </ul>
-              <div className="text-center text-3xl font-bold text-red-600">
-                {modalOption.price}
-              </div>
-              <div className="flex gap-4">
-                <Button
-                  className="flex-1 bg-red-100 border-red-200 border-2 hover:bg-red-200 text-red-800"
-                  onClick={() => {
-                    updateChoice(sectionId, modalOption.id);
-                    setModalOption(null);
-                  }}
-                >
-                  Wybierz
-                </Button>
-                {choices[sectionId] === modalOption.id && (
+        {/* —————————————————————————————————————————————
+             Modal z detalami i przyciskami Wybierz/Anuluj
+        ————————————————————————————————————————————— */}
+        {modalOption && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 relative">
+              <button
+                onClick={() => setModalOption(null)}
+                className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
+              >
+                <X className="h-6 w-6" />
+              </button>
+              <div className="p-6 space-y-4">
+                <div className="text-center space-y-2">
+                  <div className="text-5xl">{modalOption.icon}</div>
+                  <h4 className="text-2xl font-bold">{modalOption.name}</h4>
+                  <p className="text-gray-600">{modalOption.description}</p>
+                </div>
+                <ul className="space-y-2">
+                  {modalOption.features.map((feat: string, i: number) => (
+                    <li key={i} className="flex items-center text-gray-700">
+                      <span className="text-green-500 mr-2">✓</span>
+                      {feat}
+                    </li>
+                  ))}
+                </ul>
+                <div className="text-center text-3xl font-bold text-red-600">
+                  {modalOption.price}
+                </div>
+                <div className="flex gap-4">
                   <Button
-                    variant="destructive"
-                    className="flex-1"
+                    className="flex-1 bg-red-100 border-red-200 border-2 hover:bg-red-200 text-red-800"
                     onClick={() => {
-                      removeChoice(sectionId);
+                      updateChoice(sectionId, modalOption.id);
                       setModalOption(null);
                     }}
                   >
-                    Anuluj
+                    Wybierz
                   </Button>
-                )}
+                  {choices[sectionId] === modalOption.id && (
+                    <Button
+                      variant="destructive"
+                      className="flex-1"
+                      onClick={() => {
+                        removeChoice(sectionId);
+                        setModalOption(null);
+                      }}
+                    >
+                      Anuluj
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
+        )}
+        <div className="max-w-4xl mx-auto">
+          <WorkoutProgressSection />
         </div>
-      )}
-      <WorkoutProgressSection/>
+      </div>
     </div>
   );
 };
