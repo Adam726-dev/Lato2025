@@ -55,12 +55,9 @@ const TravelSection: React.FC<TravelSectionProps> = ({
 }) => {
   const { profile } = useUserProfile()
   const { choices, updateChoice, removeChoice } = usePlan()
-  // Jeśli przekazano viewMode/setViewMode z góry, używaj ich, inaczej lokalny state
   const [localViewMode, localSetViewMode] = useState<ViewMode>('options')
   const viewMode = controlledViewMode ?? localViewMode
   const setViewMode = controlledSetViewMode ?? localSetViewMode
-
-  // który kafelek jest rozwinięty w modal
   const [expanded, setExpanded] = useState<TravelOption | null>(null)
 
   const hasProfile =
@@ -72,7 +69,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
     !!profile.travelCompanions
 
   const renderTravelProfileCard = () => (
-    <Card className="mb-6 bg-blue-50 border-blue-200">
+    <Card className="bg-blue-50 border-blue-200">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Users className="h-5 w-5 text-blue-600" /> Twój Profil Podróżny
@@ -98,17 +95,14 @@ const TravelSection: React.FC<TravelSectionProps> = ({
               <strong>Nocleg:</strong> {profile.accommodationPreference}
             </div>
             <div className="md:col-span-2">
-              <strong>Destynacje:</strong>{' '}
-              {profile.destinationPreferences!.join(', ')}
+              <strong>Destynacje:</strong> {profile.destinationPreferences!.join(', ')}
             </div>
             <div className="md:col-span-2">
               <strong>Towarzystwo:</strong> {profile.travelCompanions}
             </div>
           </div>
         ) : (
-          <p className="text-gray-600">
-            Uzupełnij profil, by móc planować wakacje.
-          </p>
+          <p className="text-gray-600">Uzupełnij profil, by móc planować wakacje.</p>
         )}
         <div className="mt-4 flex gap-2">
           <Button
@@ -116,101 +110,75 @@ const TravelSection: React.FC<TravelSectionProps> = ({
             size="sm"
             onClick={() => setViewMode('wizard')}
           >
-            <Settings className="h-4 w-4" />{' '}
+            <Settings className="h-4 w-4" />
             {hasProfile ? ' Edytuj profil' : 'Utwórz profil'}
           </Button>
-          {hasProfile && (
-            <Button
-              size="sm"
-              className="bg-purple-600 hover:bg-purple-700 text-white"
-              onClick={() => setViewMode('ai-planner')}
-            >
-              <Sparkles className="h-4 w-4" /> Planuj z AI
-            </Button>
-          )}
+          
         </div>
       </CardContent>
     </Card>
   )
 
+  // Renderujemy dwa kafelki obok siebie w układzie 3:2
   const renderMainOptions = () => (
-    <div className="space-y-6">
-      {renderTravelProfileCard()}
+  <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] gap-6">
+    {/* 3/5 szerokości: profil */}
+    {renderTravelProfileCard()}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card
-          onClick={() => setViewMode('wizard')}
-          className="cursor-pointer hover:shadow-lg transition"
-        >
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-blue-600" /> Kreator Wakacji
-            </CardTitle>
-            <CardDescription>
-              Interaktywny kreator preferencji
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full">Uruchom kreator</Button>
-          </CardContent>
-        </Card>
+    {/* 2/5 szerokości: kafelek „Planuj z AI” */}
+    <Card
+      onClick={() => hasProfile && setViewMode('ai-planner')}
+      className={`
+        cursor-pointer hover:shadow-lg transition
+        flex flex-col h-full
+        max-w-full w-full
+        ${hasProfile ? '' : 'opacity-50 pointer-events-none'}
+      `}
+    >
+      <CardHeader className="flex flex-col items-center justify-center
+        flex-1 text-center         
+        p-6">
+        <CardTitle className="inline-flex items-center gap-2 text-4xl">
+          <Sparkles className="h-8 w-8 text-purple-600" />
+          Planuj z AI
+        </CardTitle>
+        <CardDescription className="mt-2 text-gray-600 text-lg">
+          Auto-plan na bazie Twojego profilu
+        </CardDescription>
+      </CardHeader>
 
-        <Card
-          onClick={() =>
-            hasProfile ? setViewMode('ai-planner') : undefined
-          }
-          className={`cursor-pointer hover:shadow-lg transition ${
-            hasProfile ? '' : 'opacity-50 pointer-events-none'
-          }`}
+      <CardContent className="mt-auto p-6 flex justify-center">
+        <Button
+          className="w-2/3 bg-purple-600 hover:bg-purple-700 text-white"
+          disabled={!hasProfile}
         >
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-600" /> Planuj z AI
-            </CardTitle>
-            <CardDescription>
-              Auto-plan na bazie Twojego profilu
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-              disabled={!hasProfile}
-            >
-              Generuj plan AI
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
+          Generuj plan AI
+        </Button>
+      </CardContent>
+    </Card>
+  </div>
+)
 
   const renderReadyTrips = () => (
     <div>
-      <h3 className="text-xl font-semibold mb-4 mt-12 text-white drop-shadow-lg">Gotowe Wycieczki</h3>
-
-      {/* 1. overflow-visible na grid + większy gap */}
+      <h3 className="text-xl font-semibold mb-4 mt-12 text-white drop-shadow-lg">
+        Gotowe Wycieczki
+      </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 overflow-visible">
         {section.options.map((opt) => {
-          const isSel = choices[sectionId] === opt.id;
+          const isSel = choices[sectionId] === opt.id
           return (
-            // 2. każdego kafelka obudowujemy w wrapper z relative + overflow-visible
             <div
               key={opt.id}
               onClick={() => setExpanded(opt)}
               className="relative overflow-visible"
             >
               <div
-                className={`
-                  ${optionCardBase}
-                  transform transition-all duration-200
-                  ${isSel
-                    ? 'scale-105 z-20 border-4'
-                    : 'z-10 hover:scale-105 hover:z-20 border-2'}
-                  
-                  ${isSel
-                    ? 'border-yellow-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-yellow-300'}
-                `}
+                className={`${optionCardBase} transform transition-all duration-200 ${
+                  isSel
+                    ? 'scale-105 z-20 border-4 border-yellow-500 bg-blue-50'
+                    : 'z-10 hover:scale-105 hover:z-20 border-2 border-gray-200 hover:border-yellow-300'
+                }`}
               >
                 <CardContent className="p-6 text-center">
                   <div className="text-4xl mb-2">{opt.image}</div>
@@ -220,21 +188,21 @@ const TravelSection: React.FC<TravelSectionProps> = ({
                     {opt.price}
                   </div>
                   <div
-                    className={`
-                      text-sm font-medium flex items-center justify-center gap-1 
-                      ${isSel ? 'text-yellow-700' : 'text-yellow-600'}
-                    `}
+                    className={`text-sm font-medium flex items-center justify-center gap-1 ${
+                      isSel ? 'text-yellow-700' : 'text-yellow-600'
+                    }`}
                   >
-                    {isSel ? 'Wybrane' : 'Szczegóły'} <ChevronRight className="h-4 w-4" />
+                    {isSel ? 'Wybrane' : 'Szczegóły'}
+                    <ChevronRight className="h-4 w-4" />
                   </div>
                 </CardContent>
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 
   const renderExpanded = () =>
     expanded && (
@@ -289,7 +257,6 @@ const TravelSection: React.FC<TravelSectionProps> = ({
     )
 
   const renderContent = () => {
-    // Usunięcie tła wideo z TravelSection, bo jest już w SectionPage
     switch (viewMode) {
       case 'wizard':
         return (
@@ -299,7 +266,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
               className="mb-6"
               onClick={() => setViewMode('options')}
             >
-              ← Powróć
+              ← Powrót do Wakacji
             </Button>
             <TravelWizard onComplete={() => setViewMode('options')} />
           </>
@@ -312,7 +279,7 @@ const TravelSection: React.FC<TravelSectionProps> = ({
               className="mb-6"
               onClick={() => setViewMode('options')}
             >
-              ← Powróć
+              ← Powrót do Wakacji
             </Button>
             <TravelPlanGenerator />
           </>
@@ -328,7 +295,6 @@ const TravelSection: React.FC<TravelSectionProps> = ({
     }
   }
 
-  // Usunięcie wrappera z tłem wideo!
   return <>{renderContent()}</>
 }
 

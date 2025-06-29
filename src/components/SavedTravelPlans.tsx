@@ -35,7 +35,7 @@ const SavedTravelPlans: React.FC<SavedTravelPlansProps> = ({ onSelectPlan }) => 
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold mb-4">Zapisane Plany Podróży</h3>
+      <h3 className="text-lg font-semibold mb-4 text-white">Zapisane Plany Podróży</h3>
       {savedPlans.map((plan) => (
         <Card key={plan.id} className="hover:shadow-md transition-shadow">
           <CardHeader className="pb-3">
