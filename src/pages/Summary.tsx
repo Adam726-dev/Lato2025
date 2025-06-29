@@ -80,7 +80,7 @@ const Summary: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-blue-100">
       <Navigation />
       <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
         <Link to="/" className="inline-flex items-center text-gray-600 mb-6">

@@ -37,14 +37,14 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-blue-100">
       <Navigation />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <div className="text-center mb-12 animate-fade-in">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-            Twój Plan na <span className="text-summer-blue">Lato</span> ☀️
+            Twój Plan na <span className="bg-gradient-to-l from-yellow-400 via-pink-400 to-purple-500 bg-clip-text text-transparent">Lato</span> ☀️
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Stwórz idealny plan na najbardziej gorące miesiące roku. Wybierz siłownię, dietę i wakacje dopasowane do Twoich potrzeb!
