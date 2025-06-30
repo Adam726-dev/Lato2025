@@ -22,7 +22,7 @@ const WorkoutProgressSection: React.FC = () => {
   const [selectedId, setSelectedId] = useState(exercises[0]?.id || "");
 
   if (exercises.length === 0) {
-    return <div>Brak ćwiczeń do wyświetlenia postępów.</div>;
+    return <div className="text-white">Brak ćwiczeń do wyświetlenia postępów.</div>;
   }
 
   return (

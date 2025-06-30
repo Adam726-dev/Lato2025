@@ -90,19 +90,19 @@ const DietSection: React.FC<DietSectionProps> = ({ sectionId, section }) => {
 
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-900">Dostępne akcje:</h4>
-                  <div className="flex gap-4">
-                    <Link to="/dieta/plan" className="flex-1">
-                      <Button className="w-full flex items-center justify-center gap-2">
-                        <Utensils className="h-4 w-4" />
-                        Zobacz plan posiłków
-                      </Button>
-                    </Link>
-                    <Link to="/dieta/catering" className="flex-1">
-                      <Button variant="outline" className="w-full">
-                        📦 Dopasuj catering
-                      </Button>
-                    </Link>
-                  </div>
+<div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
+  <Link to="/dieta/plan" className="flex-1">
+    <Button className="w-full flex items-center justify-center gap-2">
+      <Utensils className="h-4 w-4" />
+      Zobacz plan posiłków
+    </Button>
+  </Link>
+  <Link to="/dieta/catering" className="flex-1">
+    <Button variant="outline" className="w-full">
+      📦 Dopasuj catering
+    </Button>
+  </Link>
+</div>
                 </div>
               </CardContent>
             </Card>

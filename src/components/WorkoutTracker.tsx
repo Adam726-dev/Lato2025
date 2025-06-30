@@ -320,7 +320,7 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
             {currentLog?.sets.map((set, index) => {
               const previousSet = lastExerciseData?.sets[index];
               return (
-                <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                <div key={index} className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-2 sm:p-4 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium w-12">Seria {set.setNumber}</span>
                   
                   <div className="flex items-center gap-2">
