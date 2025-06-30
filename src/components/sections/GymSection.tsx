@@ -1,9 +1,9 @@
 // src/components/sections/GymSection.tsx
 
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Calendar,
   Dumbbell,
@@ -13,15 +13,15 @@ import {
   User,
   RefreshCw,
   X,
-} from 'lucide-react';
-import { getWorkoutPlans } from '@/services/workoutPlanService';
-import { WorkoutPlan } from '@/types/workoutPlan';
-import WorkoutTracker from '@/components/WorkoutTracker';
-import FitnessWizard from '@/components/FitnessWizard';
-import { useUserProfile } from '@/context/UserProfileContext';
-import { usePlan, PlanChoices } from '@/context/PlanContext';
-import { optionCardBase } from '@/components/ui/OptionCard'
-import WorkoutProgressSection from '@/components/WorkoutProgressSection';
+} from "lucide-react";
+import { getWorkoutPlans } from "@/services/workoutPlanService";
+import { WorkoutPlan } from "@/types/workoutPlan";
+import WorkoutTracker from "@/components/WorkoutTracker";
+import FitnessWizard from "@/components/FitnessWizard";
+import { useUserProfile } from "@/context/UserProfileContext";
+import { usePlan, PlanChoices } from "@/context/PlanContext";
+import { optionCardBase } from "@/components/ui/OptionCard";
+import WorkoutProgressSection from "@/components/WorkoutProgressSection";
 
 interface GymSectionProps {
   sectionId: keyof PlanChoices;
@@ -34,7 +34,7 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
 
   const [workoutPlans, setWorkoutPlans] = useState<WorkoutPlan[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
-  const [selectedDayId, setSelectedDayId] = useState<string>('');
+  const [selectedDayId, setSelectedDayId] = useState<string>("");
   const [showTracker, setShowTracker] = useState(false);
   const [showFitnessWizard, setShowFitnessWizard] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
@@ -48,7 +48,7 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
 
   useEffect(() => {
     // Ustaw prędkość odtwarzania wideo po zamontowaniu
-    const video = document.querySelector<HTMLVideoElement>('video');
+    const video = document.querySelector<HTMLVideoElement>("video");
     if (video) {
       video.playbackRate = 0.7;
     }
@@ -60,11 +60,10 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
     setShowTracker(true);
   };
 
-
   const handleBackToPlans = () => {
     setShowTracker(false);
     setSelectedPlan(null);
-    setSelectedDayId('');
+    setSelectedDayId("");
   };
   const handleEditProfile = () => setShowFitnessWizard(true);
   const handleWizardComplete = () => {
@@ -72,7 +71,8 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
     setWorkoutPlans(getWorkoutPlans());
   };
 
-  if (showFitnessWizard) return <FitnessWizard onComplete={handleWizardComplete} />;
+  if (showFitnessWizard)
+    return <FitnessWizard onComplete={handleWizardComplete} />;
   if (showTracker && selectedPlan) {
     return (
       <WorkoutTracker
@@ -85,27 +85,18 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden">
-      {/* Tło wideo */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        src="/videos/gym.mp4"
-        className="absolute inset-0 w-full h-full object-cover z-0 brightness-60 blur-sm"
-        style={{ filter: 'brightness(40%) blur(6px)', WebkitFilter: 'brightness(40%) blur(6px)' }}
-      />
-      {/* Overlay na tło */}
       <div className="relative z-10 space-y-12">
         {/* —————————————————————————————————————————————
              Pasek “Twój Plan Treningowy AI” (zawsze widoczny)
         ————————————————————————————————————————————— */}
         <div className="max-w-4xl mx-auto flex justify-between items-center mt-12">
-          <h2 className="text-3xl font-bold text-white drop-shadow-lg">Twój Plan Treningowy AI</h2>
+          <h2 className="text-3xl font-bold text-white drop-shadow-lg">
+            Twój Plan Treningowy AI
+          </h2>
           <div className="flex gap-3">
             <Button
               variant="outline"
-              onClick={() => setShowProgress(prev => !prev)}
+              onClick={() => setShowProgress((prev) => !prev)}
               className="flex items-center gap-2"
             >
               <User className="h-4 w-4" /> Postępy
@@ -128,17 +119,19 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
         {/* —————————————————————————————————————————————
              Profil fitness (tylko gdy skonfigurowany)
         ————————————————————————————————————————————— */}
-        {isProfileComplete('fitness') && (
+        {isProfileComplete("fitness") && (
           <Card className="max-w-4xl mx-auto bg-blue-50 border-blue-200 mb-6">
             <CardContent className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <User className="h-5 w-5 text-blue-600" />
                 <div>
-                  <h4 className="font-medium text-blue-900 mt-2">Profil Fitness</h4>
+                  <h4 className="font-medium text-blue-900 mt-2">
+                    Profil Fitness
+                  </h4>
                   <p className="text-sm text-blue-700">
-                    {profile.gender === 'male' ? 'Mężczyzna' : 'Kobieta'},{' '}
-                    {profile.age} lat, {profile.currentWeight}kg → {profile.targetWeight}kg, 
-                    poziom: {profile.fitnessLevel}
+                    {profile.gender === "male" ? "Mężczyzna" : "Kobieta"},{" "}
+                    {profile.age} lat, {profile.currentWeight}kg →{" "}
+                    {profile.targetWeight}kg, poziom: {profile.fitnessLevel}
                   </p>
                 </div>
               </div>
@@ -166,8 +159,10 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
               </CardTitle>
               <p className="text-gray-600">{workoutPlans[0].description}</p>
               <div className="flex items-center gap-2 text-sm text-gray-500">
-                <Calendar className="h-4 w-4" /> Utworzony:{' '}
-                {new Date(workoutPlans[0].createdAt).toLocaleDateString('pl-PL')}
+                <Calendar className="h-4 w-4" /> Utworzony:{" "}
+                {new Date(workoutPlans[0].createdAt).toLocaleDateString(
+                  "pl-PL"
+                )}
               </div>
             </CardHeader>
             <CardContent className="space-y-3 p-6">
@@ -199,7 +194,9 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
 
         {/*Siatka kafelków*/}
         <div className="max-w-6xl mx-auto space-y-6">
-          <h3 className="text-2xl font-bold text-white drop-shadow-lg">Wybierz Siłownię</h3>
+          <h3 className="text-2xl font-bold text-white drop-shadow-lg">
+            Wybierz Siłownię
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {section.options.map((option) => {
               const isSelected = choices[sectionId] === option.id;
@@ -210,21 +207,27 @@ const GymSection: React.FC<GymSectionProps> = ({ sectionId, section }) => {
                   className={`
                     ${optionCardBase} +
                     'p-6'
-                    ${isSelected
-                      ? 'border-4 border-red-400 bg-red-50 transform scale-105'
-                      : 'hover:border-red-300 border-2'}
+                    ${
+                      isSelected
+                        ? "border-4 border-red-400 bg-red-50 transform scale-105"
+                        : "hover:border-red-300 border-2"
+                    }
                   `}
                 >
                   <div className="p-6 text-center">
                     <div className="text-4xl mb-2">{option.icon}</div>
-                    <h4 className="text-2xl font-semibold mb-1">{option.name}</h4>
-                    <p className="text-gray-600 text-sm mb-3">{option.description}</p>
+                    <h4 className="text-2xl font-semibold mb-1">
+                      {option.name}
+                    </h4>
+                    <p className="text-gray-600 text-sm mb-3">
+                      {option.description}
+                    </p>
                     <div className="text-lg font-bold text-red-600 mb-2">
                       {option.price}
                     </div>
                     <div className="flex items-center justify-center text-red-700 mt-2">
                       <span className="text-sm font-medium">
-                        {isSelected ? 'Wybrane' : 'Szczegóły'}
+                        {isSelected ? "Wybrane" : "Szczegóły"}
                       </span>
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </div>
