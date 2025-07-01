@@ -45,17 +45,7 @@ const WizardLayout: React.FC<WizardLayoutProps> = ({
           style={{ filter: 'brightness(40%) blur(6px)', WebkitFilter: 'brightness(40%) blur(6px)' }}
         />
       )}
-      {title === '🏋️‍♀️ Personal Trainer AI' && (
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          src="/videos/gym.mp4"
-          className="absolute inset-0 w-full h-full object-cover z-0 brightness-60 blur-sm"
-          style={{ filter: 'brightness(40%) blur(6px)', WebkitFilter: 'brightness(40%) blur(6px)' }}
-        />
-      )}
+      
       {/* Overlay na tło */}
       <div className="relative z-10">
         <div className="max-w-4xl mx-auto">
