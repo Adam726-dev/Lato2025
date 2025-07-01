@@ -52,10 +52,10 @@ const ProgressPredictor: React.FC<ProgressPredictorProps> = ({
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl font-bold text-white mb-4">
           📈 Prognoza Twojego Postępu
         </h1>
-        <p className="text-xl text-gray-600">
+        <p className="text-xl text-white">
           Przewidywane rezultaty na podstawie Twojego planu dietetycznego i treningowego
         </p>
       </div>
